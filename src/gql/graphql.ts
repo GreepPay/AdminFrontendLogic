@@ -42,6 +42,17 @@ export type Account = {
   uuid: Scalars['String'];
 };
 
+export type AdminDashboardMetrics = {
+  __typename?: 'AdminDashboardMetrics';
+  customerOverview: CustomerOverview;
+  merchantOverview: BusinessOverview;
+  totalCustomers: Scalars['Int'];
+  totalMerchants: Scalars['Int'];
+  totalTransactions: Scalars['Int'];
+  totalVolume: Scalars['Float'];
+  transactionOverview: TransactionOverview;
+};
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   token: Scalars['String'];
@@ -51,6 +62,7 @@ export type AuthResponse = {
 /** Business profile details. */
 export type Business = {
   __typename?: 'Business';
+  auth_user_id?: Maybe<Scalars['String']>;
   /** Business banner URL. */
   banner?: Maybe<Scalars['String']>;
   /** Business name. */
@@ -79,10 +91,82 @@ export type Business = {
   resident_permit?: Maybe<Scalars['String']>;
   /** When the business profile was last updated. */
   updated_at: Scalars['DateTime'];
-  /** Associated User Profile. */
-  user_profile?: Maybe<Profile>;
   /** Business website URL. */
   website?: Maybe<Scalars['String']>;
+};
+
+export type BusinessOverview = {
+  __typename?: 'BusinessOverview';
+  fee: Scalars['Float'];
+  income: Scalars['Float'];
+  shopSales: Scalars['Float'];
+  withdrawals: Scalars['Float'];
+};
+
+export type BusinessProfile = {
+  __typename?: 'BusinessProfile';
+  auth_user_id: Scalars['String'];
+  business?: Maybe<Business>;
+  created_at: Scalars['DateTime'];
+  default_currency: Scalars['String'];
+  profile_picture?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
+  user_type: Scalars['String'];
+  verification_status: Scalars['String'];
+  verifications: Array<Verification>;
+};
+
+/** A single customer profile */
+export type Customer = {
+  __typename?: 'Customer';
+  /** City */
+  city?: Maybe<Scalars['String']>;
+  /** Country */
+  country?: Maybe<Scalars['String']>;
+  /** Profile Created At */
+  created_at: Scalars['DateTime'];
+  /** Unique ID */
+  id: Scalars['String'];
+  /** Location */
+  location?: Maybe<Scalars['String']>;
+  /** Notification Preferences */
+  notification_preferences: Scalars['String'];
+  /** Passport */
+  passport?: Maybe<Scalars['String']>;
+  /** Resident Permit */
+  resident_permit?: Maybe<Scalars['String']>;
+  /** Student ID */
+  student_id?: Maybe<Scalars['String']>;
+  /** Profile Updated At */
+  updated_at: Scalars['DateTime'];
+};
+
+export type CustomerOverview = {
+  __typename?: 'CustomerOverview';
+  added: Scalars['Float'];
+  fee: Scalars['Float'];
+  purchases: Scalars['Float'];
+  sent: Scalars['Float'];
+};
+
+export type CustomerProfile = {
+  __typename?: 'CustomerProfile';
+  auth_user_id: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  customer?: Maybe<Customer>;
+  default_currency: Scalars['String'];
+  profile_picture?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
+  user_type: Scalars['String'];
+  verification_status: Scalars['String'];
+  verifications: Array<Verification>;
+};
+
+export type DateRangeInput = {
+  from?: InputMaybe<Scalars['DateTime']>;
+  to?: InputMaybe<Scalars['DateTime']>;
 };
 
 export enum DocumentType {
@@ -107,102 +191,41 @@ export type ExchangeRateItem = {
   updatedAt: Scalars['String'];
 };
 
-export type GlobalExchangeRate = {
-  __typename?: 'GlobalExchangeRate';
-  /** Base Currency */
-  base: Scalars['String'];
-  /** Mid Rate */
-  mid: Scalars['Float'];
-  /** Target Currency */
-  target: Scalars['String'];
-  /** Timestamp */
-  timestamp: Scalars['DateTime'];
-  /** Unit */
-  unit: Scalars['Int'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Create a saved account */
-  CreateSavedAccount: UserBank;
-  /** Initiate withdrawal */
-  InitiateWithdrawal: Scalars['Boolean'];
+  AdminLogout: Scalars['Boolean'];
+  ApproveRejectVerificationRequest: Scalars['Boolean'];
+  DeleteUser: Scalars['Boolean'];
+  FreezeAccount: Scalars['Boolean'];
   /** Mark specific notifications as read for the authenticated user. */
   MarkNotificationsAsRead?: Maybe<Scalars['Boolean']>;
-  /** Redeem GRP tokens */
-  RedeemGRPToken: Scalars['Boolean'];
-  /** Remove a saved account */
-  RemoveSavedAccount: Scalars['Boolean'];
-  /** Resend email OTP */
-  ResendEmailOTP: Scalars['Boolean'];
-  /** Reset password for user */
-  ResetPassword: Scalars['Boolean'];
-  /** Save a push notification token for the authenticated user. */
-  SavePushNotificationToken?: Maybe<Scalars['Boolean']>;
-  /** send rest password OTP */
-  SendResetPasswordOTP: Scalars['Boolean'];
   /** Sign in a user */
   SignIn: AuthResponse;
-  /** Sign up a new user */
-  SignUp: User;
-  /** Update user password */
-  UpdatePassword: Scalars['Boolean'];
-  /** Update a user's profile with detailed information */
-  UpdateProfile: Scalars['Boolean'];
-  /** Verify user OTP */
-  VerifyUserOTP: Scalars['Boolean'];
+  UnfreezeAccount: Scalars['Boolean'];
+  UpdateUserRole: Scalars['Boolean'];
+  UpdateWithdrawalStatus?: Maybe<Transaction>;
 };
 
 
-export type MutationCreateSavedAccountArgs = {
-  metadata: Scalars['String'];
-  type: Scalars['String'];
-  unique_id: Scalars['String'];
+export type MutationApproveRejectVerificationRequestArgs = {
+  status: Scalars['String'];
+  user_uuid: Scalars['String'];
+  verificationId: Scalars['String'];
 };
 
 
-export type MutationInitiateWithdrawalArgs = {
-  amount: Scalars['Float'];
-  saved_account_uuid: Scalars['String'];
-  withdrawal_currency: Scalars['String'];
+export type MutationDeleteUserArgs = {
+  user_uuid: Scalars['String'];
+};
+
+
+export type MutationFreezeAccountArgs = {
+  user_uuid: Scalars['String'];
 };
 
 
 export type MutationMarkNotificationsAsReadArgs = {
   notification_ids: Array<Scalars['Int']>;
-};
-
-
-export type MutationRedeemGrpTokenArgs = {
-  grp_amount: Scalars['Float'];
-};
-
-
-export type MutationRemoveSavedAccountArgs = {
-  saved_account_uuid: Scalars['String'];
-};
-
-
-export type MutationResendEmailOtpArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationResetPasswordArgs = {
-  new_password: Scalars['String'];
-  otp_code: Scalars['String'];
-  user_uuid: Scalars['String'];
-};
-
-
-export type MutationSavePushNotificationTokenArgs = {
-  device_token: Scalars['String'];
-  device_type: Scalars['String'];
-};
-
-
-export type MutationSendResetPasswordOtpArgs = {
-  email: Scalars['String'];
 };
 
 
@@ -212,40 +235,20 @@ export type MutationSignInArgs = {
 };
 
 
-export type MutationSignUpArgs = {
-  business_name: Scalars['String'];
-  country: Scalars['String'];
-  default_currency: Scalars['String'];
-  documents: Array<Scalars['Upload']>;
-  email: Scalars['String'];
-  first_name: Scalars['String'];
-  last_name: Scalars['String'];
-  password: Scalars['String'];
-  state: Scalars['String'];
-};
-
-
-export type MutationUpdatePasswordArgs = {
-  current_password: Scalars['String'];
-  new_password: Scalars['String'];
-};
-
-
-export type MutationUpdateProfileArgs = {
-  business_name?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
-  default_currency?: InputMaybe<Scalars['String']>;
-  documents?: InputMaybe<Array<Scalars['Upload']>>;
-  first_name?: InputMaybe<Scalars['String']>;
-  last_name?: InputMaybe<Scalars['String']>;
-  profile_photo?: InputMaybe<Scalars['Upload']>;
-  state?: InputMaybe<Scalars['String']>;
-};
-
-
-export type MutationVerifyUserOtpArgs = {
-  otp: Scalars['String'];
+export type MutationUnfreezeAccountArgs = {
   user_uuid: Scalars['String'];
+};
+
+
+export type MutationUpdateUserRoleArgs = {
+  role: Scalars['String'];
+  uuid: Scalars['String'];
+};
+
+
+export type MutationUpdateWithdrawalStatusArgs = {
+  status: Scalars['String'];
+  transaction_id: Scalars['ID'];
 };
 
 /** A notification on Greep */
@@ -368,72 +371,48 @@ export type PointTransaction = {
   wallet_id: Scalars['Int'];
 };
 
-/** A paginated list of PointTransaction items. */
-export type PointTransactionPaginator = {
-  __typename?: 'PointTransactionPaginator';
-  /** A list of PointTransaction items. */
-  data: Array<PointTransaction>;
+export type Profile = {
+  __typename?: 'Profile';
+  auth_user_id: Scalars['String'];
+  business?: Maybe<Business>;
+  created_at: Scalars['DateTime'];
+  customer?: Maybe<Customer>;
+  default_currency?: Maybe<Scalars['String']>;
+  profile_picture?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
+  user_type: UserType;
+  verification_status: VerificationStatus;
+  verifications: Array<Verification>;
+};
+
+/** A paginated list of Profile items. */
+export type ProfilePaginator = {
+  __typename?: 'ProfilePaginator';
+  /** A list of Profile items. */
+  data: Array<Profile>;
   /** Pagination information about the list of items. */
   paginatorInfo: PaginatorInfo;
 };
 
-/** A user profile on Greep */
-export type Profile = {
-  __typename?: 'Profile';
-  /** User UUID */
-  auth_user_id: Scalars['String'];
-  /** The attached customer */
-  business: Business;
-  /** Profile Created At */
-  created_at: Scalars['DateTime'];
-  /** Default Currency */
-  default_currency: Scalars['String'];
-  /** Profile Picture URL (optional) */
-  profile_picture?: Maybe<Scalars['String']>;
-  /** Profile Updated At */
-  updated_at: Scalars['DateTime'];
-  /** User Type: Business, Rider, or Customer */
-  user_type: Scalars['String'];
-  /** Verification Status */
-  verification_status: Scalars['String'];
-  /** All attached verifications */
-  verifications: Array<Verification>;
-};
+export type ProfileUnion = BusinessProfile | CustomerProfile;
 
 export type Query = {
   __typename?: 'Query';
-  /** Get the authenticated user */
-  GetAuthUser?: Maybe<User>;
-  /** Get the current exchange rate between two currencies */
-  GetExchangeRate: ExchangeRate;
-  /** Get the global exchange rate between two currencies */
-  GetGlobalExchangeRate: GlobalExchangeRate;
-  /** Get a paginated list of notifications for the authenticated user */
+  GetAdminDashboardMetrics?: Maybe<AdminDashboardMetrics>;
   GetNotifications: NotificationPaginator;
-  /** Get the currently supported off-ramp currencies */
-  GetOffRampCurrencies: Array<SupportedCurrency>;
-  /** Get many point transactions */
-  GetPointTransactions: PointTransactionPaginator;
-  /** Get a paginated list of saved accounts for the authenticated user */
-  GetSavedAccounts: UserBankPaginator;
-  /** Get a single point transaction by UUID */
-  GetSinglePointTransaction?: Maybe<PointTransaction>;
-  /** Get a single transaction by UUID */
+  GetProfiles: ProfilePaginator;
   GetSingleTransaction?: Maybe<Transaction>;
-  /** Get many transactions - paginated list of transactions for the authenticated user */
   GetTransactions: TransactionPaginator;
+  GetVerificationRequests: VerificationPaginator;
+  GetWalletHistory: TransactionPaginator;
+  GetWallets: WalletPaginator;
+  GetWithdrawals: TransactionPaginator;
 };
 
 
-export type QueryGetExchangeRateArgs = {
-  from_currency: Scalars['String'];
-  to_currency: Scalars['String'];
-};
-
-
-export type QueryGetGlobalExchangeRateArgs = {
-  base: Scalars['String'];
-  target: Scalars['String'];
+export type QueryGetAdminDashboardMetricsArgs = {
+  range?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -443,27 +422,18 @@ export type QueryGetNotificationsArgs = {
 };
 
 
-export type QueryGetPointTransactionsArgs = {
+export type QueryGetProfilesArgs = {
   first: Scalars['Int'];
-  orderBy?: InputMaybe<Array<QueryGetPointTransactionsOrderByOrderByClause>>;
+  orderBy?: InputMaybe<Array<QueryGetProfilesOrderByOrderByClause>>;
   page?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<QueryGetPointTransactionsWhereWhereConditions>;
-};
-
-
-export type QueryGetSavedAccountsArgs = {
-  first: Scalars['Int'];
-  page?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryGetSinglePointTransactionArgs = {
-  uuid: Scalars['String'];
+  where?: InputMaybe<QueryGetProfilesWhereWhereConditions>;
+  whereUser?: InputMaybe<QueryGetProfilesWhereUserWhereHasConditions>;
+  whereUserRole?: InputMaybe<QueryGetProfilesWhereUserRoleWhereHasConditions>;
 };
 
 
 export type QueryGetSingleTransactionArgs = {
-  uuid: Scalars['String'];
+  transaction_uuid: Scalars['String'];
 };
 
 
@@ -472,53 +442,154 @@ export type QueryGetTransactionsArgs = {
   orderBy?: InputMaybe<Array<QueryGetTransactionsOrderByOrderByClause>>;
   page?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<QueryGetTransactionsWhereWhereConditions>;
+  whereUser?: InputMaybe<QueryGetTransactionsWhereUserWhereHasConditions>;
 };
 
-/** Allowed column names for Query.GetPointTransactions.orderBy. */
-export enum QueryGetPointTransactionsOrderByColumn {
+
+export type QueryGetVerificationRequestsArgs = {
+  first: Scalars['Int'];
+  orderBy?: InputMaybe<Array<QueryGetVerificationRequestsOrderByOrderByClause>>;
+  page?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<QueryGetVerificationRequestsWhereWhereConditions>;
+  whereUser?: InputMaybe<QueryGetVerificationRequestsWhereUserWhereHasConditions>;
+};
+
+
+export type QueryGetWalletHistoryArgs = {
+  first: Scalars['Int'];
+  orderBy?: InputMaybe<Array<QueryGetWalletHistoryOrderByOrderByClause>>;
+  page?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<QueryGetWalletHistoryWhereWhereConditions>;
+};
+
+
+export type QueryGetWalletsArgs = {
+  first: Scalars['Int'];
+  orderBy?: InputMaybe<Array<QueryGetWalletsOrderByOrderByClause>>;
+  page?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<QueryGetWalletsWhereWhereConditions>;
+  whereProfile?: InputMaybe<QueryGetWalletsWhereProfileWhereHasConditions>;
+  whereUser?: InputMaybe<QueryGetWalletsWhereUserWhereHasConditions>;
+};
+
+
+export type QueryGetWithdrawalsArgs = {
+  first: Scalars['Int'];
+  orderBy?: InputMaybe<Array<QueryGetWithdrawalsOrderByOrderByClause>>;
+  page?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<QueryGetWithdrawalsWhereWhereConditions>;
+  whereUser?: InputMaybe<QueryGetWithdrawalsWhereUserWhereHasConditions>;
+};
+
+/** Allowed column names for Query.GetProfiles.orderBy. */
+export enum QueryGetProfilesOrderByColumn {
   CreatedAt = 'CREATED_AT'
 }
 
-/** Order by clause for Query.GetPointTransactions.orderBy. */
-export type QueryGetPointTransactionsOrderByOrderByClause = {
+/** Order by clause for Query.GetProfiles.orderBy. */
+export type QueryGetProfilesOrderByOrderByClause = {
   /** The column that is used for ordering. */
-  column: QueryGetPointTransactionsOrderByColumn;
+  column: QueryGetProfilesOrderByColumn;
   /** The direction that is used for ordering. */
   order: SortOrder;
 };
 
-/** Allowed column names for Query.GetPointTransactions.where. */
-export enum QueryGetPointTransactionsWhereColumn {
-  Amount = 'AMOUNT',
-  ChargeableType = 'CHARGEABLE_TYPE',
-  Currency = 'CURRENCY',
-  DrOrCr = 'DR_OR_CR',
-  Reference = 'REFERENCE',
-  Status = 'STATUS'
+/** Allowed column names for Query.GetProfiles.where. */
+export enum QueryGetProfilesWhereColumn {
+  CreatedAt = 'CREATED_AT',
+  UserType = 'USER_TYPE'
 }
 
-/** Dynamic WHERE conditions for the `where` argument of the query `GetPointTransactions`. */
-export type QueryGetPointTransactionsWhereWhereConditions = {
+/** Allowed column names for Query.GetProfiles.whereUser. */
+export enum QueryGetProfilesWhereUserColumn {
+  Email = 'EMAIL',
+  FirstName = 'FIRST_NAME',
+  LastName = 'LAST_NAME'
+}
+
+/** Allowed column names for Query.GetProfiles.whereUserRole. */
+export enum QueryGetProfilesWhereUserRoleColumn {
+  Name = 'NAME'
+}
+
+/** Dynamic WHERE conditions for the `whereUserRole` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereUserRoleWhereHasConditions = {
   /** A set of conditions that requires all conditions to match. */
-  AND?: InputMaybe<Array<QueryGetPointTransactionsWhereWhereConditions>>;
+  AND?: InputMaybe<Array<QueryGetProfilesWhereUserRoleWhereHasConditions>>;
   /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
-  HAS?: InputMaybe<QueryGetPointTransactionsWhereWhereConditionsRelation>;
+  HAS?: InputMaybe<QueryGetProfilesWhereUserRoleWhereHasConditionsRelation>;
   /** A set of conditions that requires at least one condition to match. */
-  OR?: InputMaybe<Array<QueryGetPointTransactionsWhereWhereConditions>>;
+  OR?: InputMaybe<Array<QueryGetProfilesWhereUserRoleWhereHasConditions>>;
   /** The column that is used for the condition. */
-  column?: InputMaybe<QueryGetPointTransactionsWhereColumn>;
+  column?: InputMaybe<QueryGetProfilesWhereUserRoleColumn>;
   /** The operator that is used for the condition. */
   operator?: InputMaybe<SqlOperator>;
   /** The value that is used for the condition. */
   value?: InputMaybe<Scalars['Mixed']>;
 };
 
-/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetPointTransactions`. */
-export type QueryGetPointTransactionsWhereWhereConditionsRelation = {
+/** Dynamic HAS conditions for WHERE conditions for the `whereUserRole` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereUserRoleWhereHasConditionsRelation = {
   /** The amount to test. */
   amount?: InputMaybe<Scalars['Int']>;
   /** Additional condition logic. */
-  condition?: InputMaybe<QueryGetPointTransactionsWhereWhereConditions>;
+  condition?: InputMaybe<QueryGetProfilesWhereUserRoleWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Dynamic WHERE conditions for the `whereUser` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereUserWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetProfilesWhereUserWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetProfilesWhereUserWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetProfilesWhereUserWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetProfilesWhereUserColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereUser` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereUserWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetProfilesWhereUserWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Dynamic WHERE conditions for the `where` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereWhereConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetProfilesWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetProfilesWhereWhereConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetProfilesWhereWhereConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetProfilesWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetProfiles`. */
+export type QueryGetProfilesWhereWhereConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetProfilesWhereWhereConditions>;
   /** The comparison operator to test against the amount. */
   operator?: InputMaybe<SqlOperator>;
   /** The relation that is checked. */
@@ -548,6 +619,41 @@ export enum QueryGetTransactionsWhereColumn {
   Status = 'STATUS'
 }
 
+/** Allowed column names for Query.GetTransactions.whereUser. */
+export enum QueryGetTransactionsWhereUserColumn {
+  Email = 'EMAIL',
+  FirstName = 'FIRST_NAME',
+  LastName = 'LAST_NAME'
+}
+
+/** Dynamic WHERE conditions for the `whereUser` argument of the query `GetTransactions`. */
+export type QueryGetTransactionsWhereUserWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetTransactionsWhereUserWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetTransactionsWhereUserWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetTransactionsWhereUserWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetTransactionsWhereUserColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereUser` argument of the query `GetTransactions`. */
+export type QueryGetTransactionsWhereUserWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetTransactionsWhereUserWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
 /** Dynamic WHERE conditions for the `where` argument of the query `GetTransactions`. */
 export type QueryGetTransactionsWhereWhereConditions = {
   /** A set of conditions that requires all conditions to match. */
@@ -574,6 +680,340 @@ export type QueryGetTransactionsWhereWhereConditionsRelation = {
   operator?: InputMaybe<SqlOperator>;
   /** The relation that is checked. */
   relation: Scalars['String'];
+};
+
+/** Allowed column names for Query.GetVerificationRequests.orderBy. */
+export enum QueryGetVerificationRequestsOrderByColumn {
+  CreatedAt = 'CREATED_AT'
+}
+
+/** Order by clause for Query.GetVerificationRequests.orderBy. */
+export type QueryGetVerificationRequestsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetVerificationRequestsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for Query.GetVerificationRequests.where. */
+export enum QueryGetVerificationRequestsWhereColumn {
+  CreatedAt = 'CREATED_AT',
+  Status = 'STATUS'
+}
+
+/** Allowed column names for Query.GetVerificationRequests.whereUser. */
+export enum QueryGetVerificationRequestsWhereUserColumn {
+  Email = 'EMAIL',
+  FirstName = 'FIRST_NAME',
+  LastName = 'LAST_NAME'
+}
+
+/** Dynamic WHERE conditions for the `whereUser` argument of the query `GetVerificationRequests`. */
+export type QueryGetVerificationRequestsWhereUserWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetVerificationRequestsWhereUserWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetVerificationRequestsWhereUserWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetVerificationRequestsWhereUserWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetVerificationRequestsWhereUserColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereUser` argument of the query `GetVerificationRequests`. */
+export type QueryGetVerificationRequestsWhereUserWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetVerificationRequestsWhereUserWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Dynamic WHERE conditions for the `where` argument of the query `GetVerificationRequests`. */
+export type QueryGetVerificationRequestsWhereWhereConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetVerificationRequestsWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetVerificationRequestsWhereWhereConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetVerificationRequestsWhereWhereConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetVerificationRequestsWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetVerificationRequests`. */
+export type QueryGetVerificationRequestsWhereWhereConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetVerificationRequestsWhereWhereConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Allowed column names for Query.GetWalletHistory.orderBy. */
+export enum QueryGetWalletHistoryOrderByColumn {
+  CreatedAt = 'CREATED_AT'
+}
+
+/** Order by clause for Query.GetWalletHistory.orderBy. */
+export type QueryGetWalletHistoryOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetWalletHistoryOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for Query.GetWalletHistory.where. */
+export enum QueryGetWalletHistoryWhereColumn {
+  WalletId = 'WALLET_ID'
+}
+
+/** Dynamic WHERE conditions for the `where` argument of the query `GetWalletHistory`. */
+export type QueryGetWalletHistoryWhereWhereConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWalletHistoryWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWalletHistoryWhereWhereConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWalletHistoryWhereWhereConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWalletHistoryWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetWalletHistory`. */
+export type QueryGetWalletHistoryWhereWhereConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWalletHistoryWhereWhereConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Allowed column names for Query.GetWallets.orderBy. */
+export enum QueryGetWalletsOrderByColumn {
+  CreatedAt = 'CREATED_AT'
+}
+
+/** Order by clause for Query.GetWallets.orderBy. */
+export type QueryGetWalletsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetWalletsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for Query.GetWallets.where. */
+export enum QueryGetWalletsWhereColumn {
+  Currency = 'CURRENCY',
+  State = 'STATE'
+}
+
+/** Allowed column names for Query.GetWallets.whereProfile. */
+export enum QueryGetWalletsWhereProfileColumn {
+  UserType = 'USER_TYPE'
+}
+
+/** Dynamic WHERE conditions for the `whereProfile` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereProfileWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWalletsWhereProfileWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWalletsWhereProfileWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWalletsWhereProfileWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWalletsWhereProfileColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereProfile` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereProfileWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWalletsWhereProfileWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Allowed column names for Query.GetWallets.whereUser. */
+export enum QueryGetWalletsWhereUserColumn {
+  Email = 'EMAIL',
+  FirstName = 'FIRST_NAME',
+  LastName = 'LAST_NAME'
+}
+
+/** Dynamic WHERE conditions for the `whereUser` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereUserWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWalletsWhereUserWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWalletsWhereUserWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWalletsWhereUserWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWalletsWhereUserColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereUser` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereUserWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWalletsWhereUserWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Dynamic WHERE conditions for the `where` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereWhereConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWalletsWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWalletsWhereWhereConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWalletsWhereWhereConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWalletsWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetWallets`. */
+export type QueryGetWalletsWhereWhereConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWalletsWhereWhereConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Allowed column names for Query.GetWithdrawals.orderBy. */
+export enum QueryGetWithdrawalsOrderByColumn {
+  CreatedAt = 'CREATED_AT'
+}
+
+/** Order by clause for Query.GetWithdrawals.orderBy. */
+export type QueryGetWithdrawalsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetWithdrawalsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for Query.GetWithdrawals.where. */
+export enum QueryGetWithdrawalsWhereColumn {
+  Reference = 'REFERENCE',
+  Status = 'STATUS'
+}
+
+/** Allowed column names for Query.GetWithdrawals.whereUser. */
+export enum QueryGetWithdrawalsWhereUserColumn {
+  Email = 'EMAIL',
+  FirstName = 'FIRST_NAME',
+  LastName = 'LAST_NAME'
+}
+
+/** Dynamic WHERE conditions for the `whereUser` argument of the query `GetWithdrawals`. */
+export type QueryGetWithdrawalsWhereUserWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWithdrawalsWhereUserWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWithdrawalsWhereUserWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWithdrawalsWhereUserWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWithdrawalsWhereUserColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereUser` argument of the query `GetWithdrawals`. */
+export type QueryGetWithdrawalsWhereUserWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWithdrawalsWhereUserWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+/** Dynamic WHERE conditions for the `where` argument of the query `GetWithdrawals`. */
+export type QueryGetWithdrawalsWhereWhereConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetWithdrawalsWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetWithdrawalsWhereWhereConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetWithdrawalsWhereWhereConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetWithdrawalsWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument of the query `GetWithdrawals`. */
+export type QueryGetWithdrawalsWhereWhereConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetWithdrawalsWhereWhereConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
+
+export type Role = {
+  __typename?: 'Role';
+  created_at?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updated_at?: Maybe<Scalars['DateTime']>;
 };
 
 /** The available SQL operators that are used to filter query results. */
@@ -653,6 +1093,7 @@ export type Transaction = {
   status: Scalars['String'];
   /** Transaction Updated At */
   updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
   /** User ID */
   user_id: Scalars['Int'];
   /** Unique UUID */
@@ -663,6 +1104,14 @@ export type Transaction = {
   wallet_id: Scalars['Int'];
 };
 
+export type TransactionOverview = {
+  __typename?: 'TransactionOverview';
+  moneyIn: Scalars['Float'];
+  moneyOut: Scalars['Float'];
+  transactions: Scalars['Int'];
+  volume: Scalars['Float'];
+};
+
 /** A paginated list of Transaction items. */
 export type TransactionPaginator = {
   __typename?: 'TransactionPaginator';
@@ -671,6 +1120,11 @@ export type TransactionPaginator = {
   /** Pagination information about the list of items. */
   paginatorInfo: PaginatorInfo;
 };
+
+export enum TransactionType {
+  Credit = 'credit',
+  Debit = 'debit'
+}
 
 /** Specify if you want to include or exclude trashed results from a query. */
 export enum Trashed {
@@ -712,6 +1166,8 @@ export type User = {
   email_verified_at?: Maybe<Scalars['DateTime']>;
   /** The user first name */
   first_name: Scalars['String'];
+  /** User ID */
+  id?: Maybe<Scalars['Int']>;
   /** The user last name */
   last_name: Scalars['String'];
   /** The user phone */
@@ -720,6 +1176,7 @@ export type User = {
   phone_verified_at?: Maybe<Scalars['DateTime']>;
   /** The attached profile */
   profile: Profile;
+  role?: Maybe<Role>;
   /** The user status */
   status: Scalars['String'];
   /** The user updated at */
@@ -755,15 +1212,6 @@ export type UserBank = {
   wallet_id: Scalars['Int'];
 };
 
-/** A paginated list of UserBank items. */
-export type UserBankPaginator = {
-  __typename?: 'UserBankPaginator';
-  /** A list of UserBank items. */
-  data: Array<UserBank>;
-  /** Pagination information about the list of items. */
-  paginatorInfo: PaginatorInfo;
-};
-
 export enum UserType {
   Business = 'Business',
   Customer = 'Customer',
@@ -787,10 +1235,20 @@ export type Verification = {
   status: VerificationStatus;
   /** When the verification request was last updated. */
   updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
   /** The user type associated with the verification. */
   user_type: UserType;
   /** Additional verification data if needed. */
   verification_data?: Maybe<Scalars['JSON']>;
+};
+
+/** A paginated list of Verification items. */
+export type VerificationPaginator = {
+  __typename?: 'VerificationPaginator';
+  /** A list of Verification items. */
+  data: Array<Verification>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
 };
 
 export enum VerificationStatus {
@@ -828,8 +1286,18 @@ export type Wallet = {
   total_balance: Scalars['Float'];
   /** Wallet Updated At */
   updated_at: Scalars['DateTime'];
+  user?: Maybe<User>;
   /** Unique UUID */
   uuid: Scalars['String'];
+};
+
+/** A paginated list of Wallet items. */
+export type WalletPaginator = {
+  __typename?: 'WalletPaginator';
+  /** A list of Wallet items. */
+  data: Array<Wallet>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
 };
 
 /** Dynamic WHERE conditions for queries. */

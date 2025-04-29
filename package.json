@@ -1,7 +1,7 @@
 {
-  "name": "@greep/pos-frontend-logic",
+  "name": "@greep/admin-app-logic",
   "version": "0.0.1",
-  "description": "Frontend Logic for POS mobile",
+  "description": "Frontend Logic for Admin Web App",
   "main": "src/index.ts",
   "scripts": {
     "build:vue": "rollup -c && rollup -c --environment MINIFY",
