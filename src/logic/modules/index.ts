@@ -3,6 +3,7 @@ import Common from "./Common"
 import Form from "./Form"
 import User from "./User"
 import Notification from "./Notification"
+import Dashboard from "./Dashboard"
 
 export const Logic = {
   Auth: new Auth(),
@@ -10,4 +11,5 @@ export const Logic = {
   Form: new Form(),
   Notification: new Notification(),
   User: new User(),
+  Dashboard: new Dashboard(),
 }

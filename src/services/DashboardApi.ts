@@ -44,6 +44,74 @@ export default class DashboardApi extends BaseApiService {
     return response
   }
 
+  public GetGeneralOverview = () => {
+    const requestData = `
+    query GetGeneralOverview {
+      GetGeneralOverview(range: "monthly") {
+        totalMerchants
+        totalCustomers
+        totalTransactions
+        totalVolume
+      }
+    }
+  `
+
+    const response: Promise<OperationResult<{ GetGeneralOverview: any }>> =
+      this.query(requestData, {})
+    return response
+  }
+
+  public GetMerchantOverview = () => {
+    const requestData = `
+    query GetMerchantOverview {
+      GetMerchantOverview(range: "weekly") {
+        income
+        withdrawals
+        shopSales
+        fee
+      }
+    }
+  `
+
+    const response: Promise<OperationResult<{ GetMerchantOverview: any }>> =
+      this.query(requestData, {})
+    return response
+  }
+
+  public GetCustomerOverview = () => {
+    const requestData = `
+    query GetCustomerOverview {
+      GetCustomerOverview(range: "monthly") {
+        added
+        fee
+        purchases
+        sent
+      }
+    }
+  `
+
+    const response: Promise<OperationResult<{ GetCustomerOverview: any }>> =
+      this.query(requestData, {})
+    return response
+  }
+
+  public GetTransactionOverview = () => {
+    const requestData = `
+    query GetTransactionOverview {
+      GetTransactionOverview(range: "monthly") {
+        moneyIn
+        moneyOut
+        transactions
+        volume
+      }
+    }
+  `
+
+    const response: Promise<OperationResult<{ GetTransactionOverview: any }>> =
+      this.query(requestData, {})
+    return response
+  }
+
   public GetProfiles = () => {
     const requestData = `
       query GetProfiles {
