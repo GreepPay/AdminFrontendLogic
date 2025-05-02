@@ -1,5 +1,4 @@
-import {
-  MutationSavePushNotificationTokenArgs,
+import { 
   NotificationPaginator,
 } from "src/gql/graphql";
 import { OperationResult } from "urql";
@@ -65,28 +64,5 @@ export default class NotificationApi extends BaseApiService {
 
     return response;
   };
-
-  public SavePushNotificationToken = (
-    data: MutationSavePushNotificationTokenArgs,
-  ) => {
-    const requestData = `
-      mutation SavePushNotificationToken(
-        $deviceToken: String!
-        $deviceType: String!
-      ) {
-        SavePushNotificationToken(
-          device_token: $deviceToken
-          device_type: $deviceType
-        )
-      }
-		`;
-
-    const response: Promise<
-      OperationResult<{
-        SavePushNotificationToken: Boolean;
-      }>
-    > = this.mutation(requestData, data);
-
-    return response;
-  };
+ 
 }

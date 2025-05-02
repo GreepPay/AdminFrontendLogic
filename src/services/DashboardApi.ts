@@ -6,58 +6,32 @@ import {
 import { OperationResult } from "urql"
 import { BaseApiService } from "./common/BaseService"
 
-export default class UserApi extends BaseApiService {
+export default class DashboardApi extends BaseApiService {
   // Queries
   public GetAdminDashboardMetrics = () => {
     // public GetAdminDashboardMetrics = (range: string) => {
     const requestData = `
-      query GetAdminDashboardMetrics {
+    query GetAdminDashboardMetrics {
         GetAdminDashboardMetrics(range: "monthly") {
-          totalMerchants
-          totalCustomers
-          totalTransactions
-          totalVolume
-          merchantOverview {
-            income
-            withdrawals
-            shopSales
-            fee
-          }
-          customerOverview {
-            sent
-            added
-            purchases
-            fee
-          }
-          transactionOverview {
-            transactions
-            moneyIn
-            moneyOut
-            volume
+        totalVolume
+        totalTransactions
+        totalCustomers
+        customerOverview {
+          added
+          fee
+          purchases
+          sent
+        }
+        totalMerchants
+        merchantOverview {
+          fee
+          income
+          shopSales
+          withdrawals
         }
       }
     }
     `
-    //   query GetAdminDashboardMetrics {
-    //     GetAdminDashboardMetrics(range: "monthly") {
-    //     totalVolume
-    //     totalTransactions
-    //     totalCustomers
-    //     customerOverview {
-    //       added
-    //       fee
-    //       purchases
-    //       sent
-    //     }
-    //     totalMerchants
-    //     merchantOverview {
-    //       fee
-    //       income
-    //       shopSales
-    //       withdrawals
-    //     }
-    //   }
-    // }
 
     const response: Promise<
       OperationResult<{
@@ -70,11 +44,11 @@ export default class UserApi extends BaseApiService {
     return response
   }
 
-  public GetAllAdminProfiles = () => {
+  public GetProfiles = () => {
     const requestData = `
       query GetProfiles {
         GetProfiles(
-          first: 10
+          first: 24
           # where: {
           #   column: USER_TYPE
           #   operator: EQ
@@ -103,21 +77,19 @@ export default class UserApi extends BaseApiService {
             user_type
             verification_status
             default_currency
-             updated_at
             user {
               uuid
               first_name
               email
-              last_name
-              profile {
-                profile_picture
-              }
               role {
-                name 
-                id
-                description
+                name
               }
-            } 
+            }
+            business {
+              business_name
+              country
+              documents
+            }
             # customer {
             #   country
             # }
@@ -128,7 +100,7 @@ export default class UserApi extends BaseApiService {
 
     const response: Promise<
       OperationResult<{
-        GetProfiles: any
+        UserProfile: any
       }>
     > = this.query(requestData, {})
 

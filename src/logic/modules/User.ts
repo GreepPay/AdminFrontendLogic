@@ -1,34 +1,44 @@
-import { MutationUpdateProfileArgs } from "../../gql/graphql";
-import { $api } from "../../services";
-import { CombinedError } from "urql";
-import Common from "./Common";
-import { Logic } from "..";
+import { $api } from "../../services"
+import { CombinedError } from "urql"
+import Common from "./Common"
+import { Logic } from ".."
+import {
+  AdminDashboardMetrics,
+  Profile,
+  ProfilePaginator,
+} from "../../gql/graphql"
 
 export default class User extends Common {
   constructor() {
-    super();
+    super()
   }
 
   // Base Variables
+  public AdminDashboardMetrics: AdminDashboardMetrics | undefined = undefined
+  public UserProfile: Profile | undefined = undefined
+  public AdminProfilePaginator: ProfilePaginator | undefined
 
   // Mutation Variables
-  public UpdateProfileForm: MutationUpdateProfileArgs | undefined;
 
   // Queries
+  // public GetAdminDashboardMetrics = async (
+  //   range = ""
+  // ): Promise<AdminDashboardMetrics | undefined> => {
+  //   return $api.user.GetAdminDashboardMetrics().then((response) => {
+  //     const metrics = response.data?.GetAdminDashboardMetrics
+  //     this.AdminDashboardMetrics = metrics
+  //     return metrics
+  //   })
+  // }
+
+  public GetAllAdminProfiles = async (): Promise<
+    ProfilePaginator | undefined
+  > => {
+    return $api.user.GetAllAdminProfiles().then((response) => {
+      this.AdminProfilePaginator = response.data?.GetProfiles
+      return this.AdminProfilePaginator
+    })
+  }
 
   // Mutations
-  public UpdateProfile = async () => {
-    if (this.UpdateProfileForm) {
-      return $api.user
-        .UpdateProfile(this.UpdateProfileForm)
-        .then((response) => {
-          if (response.data?.UpdateProfile) {
-            return response.data.UpdateProfile;
-          }
-        })
-        .catch((error: CombinedError) => {
-          Logic.Common.showError(error, "Oops!", "error-alert");
-        });
-    }
-  };
 }

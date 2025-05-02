@@ -38,7 +38,7 @@ export default class Common {
 
   public SetRouter = (router: Router) => {
     console.log(router)
-    
+
     this.router = router
   }
 
@@ -72,7 +72,7 @@ export default class Common {
 
   public GoToRoute = (path: string) => {
     console.log(path)
-    console.log(this.router) 
+    console.log(this.router)
 
     this.router?.push(path)
   }
@@ -304,7 +304,7 @@ export default class Common {
     if (oldData != undefined && newData != undefined) {
       return { ...oldData, ...newData }
     }
-    return oldData
+    return newData
   }
 
   public preFetchRouteData = (
