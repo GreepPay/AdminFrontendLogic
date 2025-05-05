@@ -1,12 +1,7 @@
 import { $api } from "../../services"
 import { CombinedError } from "urql"
 import Common from "./Common"
-import { Logic } from ".."
-import {
-  MutationSignInArgs,
-  User,
-  MutationUpdateUserRoleArgs,
-} from "src/gql/graphql"
+import { MutationSignInArgs, User } from "src/gql/graphql"
 
 export default class Auth extends Common {
   constructor() {
@@ -31,6 +26,7 @@ export default class Auth extends Common {
 
   // Mutation Variables
   public SignInPayload: MutationSignInArgs | undefined
+  public ActivateAccountPayload: MutationSignInArgs | undefined
 
   // Private methods
   private SetUpAuth = (AuthResponse: any | undefined) => {
@@ -74,4 +70,31 @@ export default class Auth extends Common {
         })
     }
   }
+
+  public ActivateAccount = (formIsValid: boolean) => {
+    if (formIsValid && this.SignInPayload) {
+      return $api.auth
+        .SignIn(this.SignInPayload)
+        .then((response) => {
+          if (response.data?.SignIn) {
+            this.SetUpAuth(response.data.SignIn)
+            return response.data
+          }
+        })
+        .catch((error: CombinedError) => {
+          throw new Error(error.message)
+        })
+    }
+  }
+
+  // SignUp
+
+  // SignIn
+
+  // ActivateAdminAccount
+
+  // AdminLogout
+  // Queries:
+
+  // GetAuthUser
 }

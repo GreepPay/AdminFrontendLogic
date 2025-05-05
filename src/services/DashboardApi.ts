@@ -1,53 +1,19 @@
-import {
-  QueryGetAdminDashboardMetricsArgs,
-  AdminDashboardMetrics,
-  QueryGetProfilesArgs,
-} from "src/gql/graphql"
+// import { QueryGetProfilesArgs } from "src/gql/graphql"
 import { OperationResult } from "urql"
 import { BaseApiService } from "./common/BaseService"
+import {
+  GeneralOverview,
+  BusinessOverview,
+  CustomerOverview,
+  TransactionOverview,
+} from "../gql/graphql"
 
 export default class DashboardApi extends BaseApiService {
   // Queries
-  public GetAdminDashboardMetrics = () => {
-    // public GetAdminDashboardMetrics = (range: string) => {
+  public GetGeneralOverview = (range: string) => {
     const requestData = `
-    query GetAdminDashboardMetrics {
-        GetAdminDashboardMetrics(range: "monthly") {
-        totalVolume
-        totalTransactions
-        totalCustomers
-        customerOverview {
-          added
-          fee
-          purchases
-          sent
-        }
-        totalMerchants
-        merchantOverview {
-          fee
-          income
-          shopSales
-          withdrawals
-        }
-      }
-    }
-    `
-
-    const response: Promise<
-      OperationResult<{
-        GetAdminDashboardMetrics: AdminDashboardMetrics
-      }>
-    > = this.query(requestData, {})
-
-    console.log("response", response)
-
-    return response
-  }
-
-  public GetGeneralOverview = () => {
-    const requestData = `
-    query GetGeneralOverview {
-      GetGeneralOverview(range: "monthly") {
+    query GetGeneralOverview ($range: String) {
+      GetGeneralOverview (range: $range) {
         totalMerchants
         totalCustomers
         totalTransactions
@@ -56,15 +22,16 @@ export default class DashboardApi extends BaseApiService {
     }
   `
 
-    const response: Promise<OperationResult<{ GetGeneralOverview: any }>> =
-      this.query(requestData, {})
+    const response: Promise<
+      OperationResult<{ GetGeneralOverview: GeneralOverview }>
+    > = this.query(requestData, { range })
     return response
   }
 
-  public GetMerchantOverview = () => {
+  public GetMerchantOverview = (range: string) => {
     const requestData = `
-    query GetMerchantOverview {
-      GetMerchantOverview(range: "weekly") {
+    query GetMerchantOverview ($range: String) {
+      GetMerchantOverview (range: $range) {
         income
         withdrawals
         shopSales
@@ -73,15 +40,16 @@ export default class DashboardApi extends BaseApiService {
     }
   `
 
-    const response: Promise<OperationResult<{ GetMerchantOverview: any }>> =
-      this.query(requestData, {})
+    const response: Promise<
+      OperationResult<{ GetMerchantOverview: BusinessOverview }>
+    > = this.query(requestData, { range })
     return response
   }
 
-  public GetCustomerOverview = () => {
+  public GetCustomerOverview = (range: string) => {
     const requestData = `
-    query GetCustomerOverview {
-      GetCustomerOverview(range: "monthly") {
+    query GetCustomerOverview ($range: String)  {
+      GetCustomerOverview (range: $range) {
         added
         fee
         purchases
@@ -90,15 +58,16 @@ export default class DashboardApi extends BaseApiService {
     }
   `
 
-    const response: Promise<OperationResult<{ GetCustomerOverview: any }>> =
-      this.query(requestData, {})
+    const response: Promise<
+      OperationResult<{ GetCustomerOverview: CustomerOverview }>
+    > = this.query(requestData, { range })
     return response
   }
 
-  public GetTransactionOverview = () => {
+  public GetTransactionOverview = (range: string) => {
     const requestData = `
-    query GetTransactionOverview {
-      GetTransactionOverview(range: "monthly") {
+    query GetTransactionOverview ($range: String)  {
+      GetTransactionOverview (range: $range) {
         moneyIn
         moneyOut
         transactions
@@ -107,71 +76,72 @@ export default class DashboardApi extends BaseApiService {
     }
   `
 
-    const response: Promise<OperationResult<{ GetTransactionOverview: any }>> =
-      this.query(requestData, {})
-    return response
-  }
-
-  public GetProfiles = () => {
-    const requestData = `
-      query GetProfiles {
-        GetProfiles(
-          first: 24
-          # where: {
-          #   column: USER_TYPE
-          #   operator: EQ
-          #   value: "Business"
-          # }
-          # whereUser: {
-          #   column: FIRST_NAME
-          #   operator: LIKE
-          #   value: "John"
-          # }
-          # whereUserRole: {
-          #   column: NAME
-          #   operator: EQ
-          #   value: "Admin"
-          # }
-        ) {
-          paginatorInfo {
-            currentPage
-            lastPage
-            perPage
-            total
-            hasMorePages
-          }
-          data {
-            auth_user_id
-            user_type
-            verification_status
-            default_currency
-            user {
-              uuid
-              first_name
-              email
-              role {
-                name
-              }
-            }
-            business {
-              business_name
-              country
-              documents
-            }
-            # customer {
-            #   country
-            # }
-          }
-        }
-      } 
-  `
-
     const response: Promise<
-      OperationResult<{
-        UserProfile: any
-      }>
-    > = this.query(requestData, {})
-
+      OperationResult<{ GetTransactionOverview: TransactionOverview }>
+    > = this.query(requestData, { range })
     return response
   }
+
+  // public GetProfiles = () => {
+  //   const requestData = `
+  //     query GetProfiles {
+  //       GetProfiles(
+  //         first: 24
+  //         # where: {
+  //         #   column: USER_TYPE
+  //         #   operator: EQ
+  //         #   value: "Business"
+  //         # }
+  //         # whereUser: {
+  //         #   column: FIRST_NAME
+  //         #   operator: LIKE
+  //         #   value: "John"
+  //         # }
+  //         # whereUserRole: {
+  //         #   column: NAME
+  //         #   operator: EQ
+  //         #   value: "Admin"
+  //         # }
+  //       ) {
+  //         paginatorInfo {
+  //           currentPage
+  //           lastPage
+  //           perPage
+  //           total
+  //           hasMorePages
+  //         }
+  //         data {
+  //           auth_user_id
+  //           user_type
+  //           verification_status
+  //           default_currency
+  //           user {
+  //             uuid
+  //             first_name
+  //             email
+  //             role {
+  //               name
+  //             }
+  //           }
+  //           business {
+  //             business_name
+  //             country
+  //             documents
+  //           }
+  //           # customer {
+  //           #   country
+  //           # }
+  //         }
+  //       }
+  //     }
+  // `
+
+  //   const response: Promise<
+  //     OperationResult<{
+  //       UserProfile: any
+  //     }>
+  //   > = this.query(requestData, {})
+
+  //   return response
+  // }
 }

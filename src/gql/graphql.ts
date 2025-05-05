@@ -42,17 +42,6 @@ export type Account = {
   uuid: Scalars['String'];
 };
 
-export type AdminDashboardMetrics = {
-  __typename?: 'AdminDashboardMetrics';
-  customerOverview: CustomerOverview;
-  merchantOverview: BusinessOverview;
-  totalCustomers: Scalars['Int'];
-  totalMerchants: Scalars['Int'];
-  totalTransactions: Scalars['Int'];
-  totalVolume: Scalars['Float'];
-  transactionOverview: TransactionOverview;
-};
-
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   token: Scalars['String'];
@@ -191,19 +180,37 @@ export type ExchangeRateItem = {
   updatedAt: Scalars['String'];
 };
 
+export type GeneralOverview = {
+  __typename?: 'GeneralOverview';
+  totalCustomers: Scalars['Int'];
+  totalMerchants: Scalars['Int'];
+  totalTransactions: Scalars['Int'];
+  totalVolume: Scalars['Float'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  ActivateAdminAccount: User;
   AdminLogout: Scalars['Boolean'];
   ApproveRejectVerificationRequest: Scalars['Boolean'];
   DeleteUser: Scalars['Boolean'];
   FreezeAccount: Scalars['Boolean'];
   /** Mark specific notifications as read for the authenticated user. */
   MarkNotificationsAsRead?: Maybe<Scalars['Boolean']>;
-  /** Sign in a user */
   SignIn: AuthResponse;
+  SignUp: User;
   UnfreezeAccount: Scalars['Boolean'];
   UpdateUserRole: Scalars['Boolean'];
   UpdateWithdrawalStatus?: Maybe<Transaction>;
+};
+
+
+export type MutationActivateAdminAccountArgs = {
+  email: Scalars['String'];
+  first_name: Scalars['String'];
+  last_name: Scalars['String'];
+  otp: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -232,6 +239,11 @@ export type MutationMarkNotificationsAsReadArgs = {
 export type MutationSignInArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationSignUpArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -399,10 +411,15 @@ export type ProfileUnion = BusinessProfile | CustomerProfile;
 
 export type Query = {
   __typename?: 'Query';
-  GetAdminDashboardMetrics?: Maybe<AdminDashboardMetrics>;
+  /** Get the authenticated user */
+  GetAuthUser?: Maybe<User>;
+  GetCustomerOverview: CustomerOverview;
+  GetGeneralOverview: GeneralOverview;
+  GetMerchantOverview: BusinessOverview;
   GetNotifications: NotificationPaginator;
   GetProfiles: ProfilePaginator;
   GetSingleTransaction?: Maybe<Transaction>;
+  GetTransactionOverview: TransactionOverview;
   GetTransactions: TransactionPaginator;
   GetVerificationRequests: VerificationPaginator;
   GetWalletHistory: TransactionPaginator;
@@ -411,7 +428,17 @@ export type Query = {
 };
 
 
-export type QueryGetAdminDashboardMetricsArgs = {
+export type QueryGetCustomerOverviewArgs = {
+  range?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetGeneralOverviewArgs = {
+  range?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetMerchantOverviewArgs = {
   range?: InputMaybe<Scalars['String']>;
 };
 
@@ -434,6 +461,11 @@ export type QueryGetProfilesArgs = {
 
 export type QueryGetSingleTransactionArgs = {
   transaction_uuid: Scalars['String'];
+};
+
+
+export type QueryGetTransactionOverviewArgs = {
+  range?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1213,6 +1245,7 @@ export type UserBank = {
 };
 
 export enum UserType {
+  Admin = 'Admin',
   Business = 'Business',
   Customer = 'Customer',
   Rider = 'Rider'

@@ -7,7 +7,7 @@ import {
   TransactionOverview,
 } from "../../gql/graphql"
 
-export default class Dashboard extends Common {
+export default class Transaction extends Common {
   constructor() {
     super()
   }
@@ -59,84 +59,16 @@ export default class Dashboard extends Common {
   // Mutations
 }
 
-/*
-
-✅ 1. Auth Service
-Handles authentication and user session management.
-
-Mutations:
-
-// SignUp
-
-// SignIn
-
-// ActivateAdminAccount
-
-// AdminLogout
-
-// Queries:
-
-// GetAuthUser
-
-// ✅ 2. Dashboard Service
-// Provides summarized system data based on user roles.
-
-// Queries:
-
-// GetGeneralOverview
-
-// GetMerchantOverview
-
-// GetCustomerOverview
-
-// GetTransactionOverview
-
-// ✅ 3. Transactions Service
-// Deals with transactions and withdrawal requests.
-
-
-// ✅ 4. Wallet Service
-// Handles wallet-related operations.
- 
-// ✅ 5. Users Service
-// Manages user-related actions and profiles.
-
 // Mutations:
 
-// UpdateUserRole
-
-// DeleteUser
-
-// FreezeAccount
-
-// UnfreezeAccount
+// UpdateWithdrawalStatus
 
 // Queries:
 
-// GetProfiles
+// GetSingleTransaction
 
-// ✅ 6. Verification Service
-// Handles user verification requests.
+// GetTransactions
 
-// Mutations:
+// GetWalletHistory
 
-// ApproveRejectVerificationRequest
-
-// Queries:
-
-// GetVerificationRequests
-
-// ✅ 7. Notifications Service
-// Manages user notifications.
-
-// Mutations:
-
-// MarkNotificationsAsRead
-
-// Queries:
-
-// GetNotifications
-
-
-
-*/
+// GetWithdrawals
