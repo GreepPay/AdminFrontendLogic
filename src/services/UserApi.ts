@@ -71,70 +71,70 @@ export default class UserApi extends BaseApiService {
   }
 
   // Queries
-  public GetAllAdminProfiles = () => {
-    const requestData = `
-      query GetProfiles {
-        GetProfiles(
-          first: 10
-          # where: {
-          #   column: USER_TYPE
-          #   operator: EQ
-          #   value: "Business"
-          # }
-          # whereUser: {
-          #   column: FIRST_NAME
-          #   operator: LIKE
-          #   value: "John"
-          # }
-          # whereUserRole: {
-          #   column: NAME
-          #   operator: EQ
-          #   value: "Admin"
-          # }
-        ) {
-          paginatorInfo {
-            currentPage
-            lastPage
-            perPage
-            total
-            hasMorePages
-          }
-          data {
-            auth_user_id
-            user_type
-            verification_status
-            default_currency
-             updated_at
-            user {
-              uuid
-              first_name
-              email
-              last_name
-              profile {
-                profile_picture
-              }
-              role {
-                name 
-                id
-                description
-              }
-            } 
-            # customer {
-            #   country
-            # }
-          }
-        }
-      } 
-  `
+  // public GetAllAdminProfiles = () => {
+  //   const requestData = `
+  //     query GetProfiles {
+  //       GetProfiles(
+  //         first: 10
+  //         # where: {
+  //         #   column: USER_TYPE
+  //         #   operator: EQ
+  //         #   value: "Business"
+  //         # }
+  //         # whereUser: {
+  //         #   column: FIRST_NAME
+  //         #   operator: LIKE
+  //         #   value: "John"
+  //         # }
+  //         # whereUserRole: {
+  //         #   column: NAME
+  //         #   operator: EQ
+  //         #   value: "Admin"
+  //         # }
+  //       ) {
+  //         paginatorInfo {
+  //           currentPage
+  //           lastPage
+  //           perPage
+  //           total
+  //           hasMorePages
+  //         }
+  //         data {
+  //           auth_user_id
+  //           user_type
+  //           verification_status
+  //           default_currency
+  //            updated_at
+  //           user {
+  //             uuid
+  //             first_name
+  //             email
+  //             last_name
+  //             profile {
+  //               profile_picture
+  //             }
+  //             role {
+  //               name 
+  //               id
+  //               description
+  //             }
+  //           } 
+  //           # customer {
+  //           #   country
+  //           # }
+  //         }
+  //       }
+  //     } 
+  // `
 
-    const response: Promise<
-      OperationResult<{
-        GetProfiles: any
-      }>
-    > = this.query(requestData, {})
+  //   const response: Promise<
+  //     OperationResult<{
+  //       GetProfiles: any
+  //     }>
+  //   > = this.query(requestData, {})
 
-    return response
-  }
+  //   return response
+  // }
 
   //
   public GetCustomerProfiles = (first: number, page: number) => {
@@ -235,12 +235,13 @@ export default class UserApi extends BaseApiService {
   query GetProfiles  ($first: Int!, $page: Int!)  {
   GetProfiles(
       first: $first,
-    page: $page  
-    whereUserRole: {
+      page: $page  
+      whereUserRole: {
       column: NAME
-      operator: EQ
-      value: "Admin"
+      operator: IN
+      value: ["Admin", "SuperAdmin"]
     }
+
   ) {
     paginatorInfo {
      firstItem

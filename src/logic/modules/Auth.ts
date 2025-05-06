@@ -6,14 +6,13 @@ import {
   MutationSignInArgs,
   User,
 } from "src/gql/graphql"
+import { Logic } from ".."
 
 export default class Auth extends Common {
   constructor() {
     super()
     this.AccessToken = localStorage.getItem("access_token")
     const authUserRaw = localStorage.getItem("auth_user")
-
-    console.log("authUserRaw", authUserRaw)
 
     try {
       this.AuthUser =
@@ -52,11 +51,20 @@ export default class Auth extends Common {
 
   // Queries
   public GetAuthUser = async (): Promise<User | undefined> => {
-    return $api.auth.GetAuthUser().then((response) => {
-      this.AuthUser = response.data?.GetAuthUser
-      localStorage.setItem("auth_user", JSON.stringify(this.AuthUser))
-      return this.AuthUser
-    })
+    return $api.auth
+      .GetAuthUser()
+      .then((response) => {
+        this.AuthUser = response.data?.GetAuthUser
+        console.log(this.AuthUser)
+
+        return this.AuthUser
+      })
+      .catch((error: CombinedError) => {
+        localStorage.clear()
+        this.AccessToken = ""
+        this.AuthUser = undefined
+        throw error
+      })
   }
 
   // Mutations
@@ -71,7 +79,6 @@ export default class Auth extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("error", error)
           throw new Error(error.message)
         })
     }
@@ -82,10 +89,7 @@ export default class Auth extends Common {
       return $api.auth
         .ActivateAdminAccount(this.ActivateAccountPayload)
         .then((response) => {
-          if (response.data?.ActivateAdminAccount) {
-            this.SetUpAuth(response.data.ActivateAdminAccount)
-            return response.data
-          }
+          return response.data?.ActivateAdminAccount
         })
         .catch((error: CombinedError) => {
           throw new Error(error.message)
@@ -93,14 +97,28 @@ export default class Auth extends Common {
     }
   }
 
-  // SignUp
+  public SignUp = async (email: string): Promise<User | undefined> => {
+    return $api.auth
+      .SignUp(email)
+      .then((response) => {
+        return response.data?.SignUp
+      })
+      .catch((error: CombinedError) => {
+        throw new Error(error.message)
+      })
+  }
 
-  // SignIn
-
-  // ActivateAdminAccount
-
-  // AdminLogout
-  // Queries:
-
-  // GetAuthUser
+  public AdminLogout = () => {
+    $api.auth
+      .AdminLogout()
+      .then(() => {
+        this.AccessToken = ""
+        this.AuthUser = undefined
+        localStorage.clear()
+        Logic.Common.GoToRoute("/auth/login")
+      })
+      .catch((error: CombinedError) => {
+        throw new Error(error.message)
+      })
+  }
 }

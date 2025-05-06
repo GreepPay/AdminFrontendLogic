@@ -14,32 +14,24 @@ export default class AuthApi extends BaseApiService {
     const requestData = `
       query GetAuthUser {
         GetAuthUser {
+          id
+          email
           uuid
+          role {
+            id
+            name
+            created_at
+            description
+          }  
+          created_at
           first_name
-          last_name
-          phone
           email_verified_at
+          last_name
+          status
+          updated_at
+          username 
+          phone
           phone_verified_at
-          username
-          profile {
-            profile_picture
-            verification_status
-            default_currency
-            business {
-              banner
-              business_name
-              city
-              country
-              description
-              logo
-            }
-          }
-          wallet {
-            total_balance
-            point_balance
-            currency
-            state
-          }
         }
       }
 		`
@@ -89,36 +81,28 @@ export default class AuthApi extends BaseApiService {
     return response
   }
 
-  public SignUp = (data: MutationSignUpArgs) => {
+  public SignUp = (email: string) => {
     const requestData = `
     mutation SignUp($email: String!) {
       SignUp(email: $email) {
-        id
-        uuid
-        first_name
-        last_name
-        username
-        email
-        phone
-        email_verified_at
-        phone_verified_at
-        status
-        profile {
-          avatar
-          gender
-          address
-        }
-        wallet {
           id
-          balance
-          currency
-        }
-        created_at
-        updated_at
-        role {
-          id
-          name
-        }
+          email
+          uuid
+          role {
+            id
+            name
+            created_at
+            description
+          }  
+          created_at
+          first_name
+          email_verified_at
+          last_name
+          status
+          updated_at
+          username 
+          phone
+          phone_verified_at
       }
     }
   `
@@ -126,9 +110,7 @@ export default class AuthApi extends BaseApiService {
       OperationResult<{
         SignUp: User
       }>
-    > = this.mutation(requestData, data)
-
-    console.log("response", response)
+    > = this.mutation(requestData, { email })
 
     return response
   }
@@ -149,32 +131,24 @@ export default class AuthApi extends BaseApiService {
         last_name: $last_name
         password: $password
       ) {
-        id
-        uuid
-        first_name
-        last_name
-        username
-        email
-        phone
-        email_verified_at
-        phone_verified_at
-        status
-        profile {
-          avatar
-          gender
-          address
-        }
-        wallet {
-          id
-          balance
-          currency
-        }
-        created_at
-        updated_at
-        role {
-          id
-          name
-        }
+         id
+          email
+          uuid
+          role {
+            id
+            name
+            created_at
+            description
+          }  
+          created_at
+          first_name
+          email_verified_at
+          last_name
+          status
+          updated_at
+          username 
+          phone
+          phone_verified_at
       }
     }
   `

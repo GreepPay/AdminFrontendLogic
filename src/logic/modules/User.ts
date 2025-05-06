@@ -25,14 +25,14 @@ export default class User extends Common {
   public UpdateUserRolePayload: MutationUpdateUserRoleArgs | undefined
 
   // Queries
-  public GetAllAdminProfiles = async (): Promise<
-    ProfilePaginator | undefined
-  > => {
-    return $api.user.GetAllAdminProfiles().then((response) => {
-      this.AdminProfilePaginator = response.data?.GetProfiles
-      return this.AdminProfilePaginator
-    })
-  }
+  // public GetAllAdminProfiles = async (): Promise<
+  //   ProfilePaginator | undefined
+  // > => {
+  //   return $api.user.GetAllAdminProfiles().then((response) => {
+  //     this.AdminProfilePaginator = response.data?.GetProfiles
+  //     return this.AdminProfilePaginator
+  //   })
+  // }
 
   public GetCustomerProfiles = async (
     first: number = 10,
