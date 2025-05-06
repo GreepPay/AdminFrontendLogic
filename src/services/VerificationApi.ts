@@ -1,8 +1,40 @@
 import { OperationResult } from "urql"
 import { BaseApiService } from "./common/BaseService"
-import { VerificationPaginator } from "src/gql/graphql"
+import {
+  MutationApproveRejectVerificationRequestArgs,
+  VerificationPaginator,
+} from "src/gql/graphql"
 
 export default class VerificationApi extends BaseApiService {
+  // mutatioin
+  public ApproveRejectVerificationRequest = (
+    data: MutationApproveRejectVerificationRequestArgs
+  ) => {
+    const requestData = `
+    mutation ApproveRejectVerificationRequest(
+      $user_uuid: String!
+      $verificationId: String!
+      $status: String!
+    ) {
+      ApproveRejectVerificationRequest(
+        user_uuid: $user_uuid
+        verificationId: $verificationId
+        status: $status
+      )
+    }
+  `
+
+    const response: Promise<
+      OperationResult<{
+        ApproveRejectVerificationRequest: boolean
+      }>
+    > = this.mutation(requestData, data)
+
+    console.log("ApproveRejectVerificationRequest response", response)
+
+    return response
+  }
+
   // Queries
   public GetVerificationRequests = (first: number, page: number) => {
     const requestData = `
@@ -19,9 +51,7 @@ export default class VerificationApi extends BaseApiService {
           }
           data {
             auth_user_id
-            created_at
-            document_url 
-            document_type 
+            created_at  
             status
             id
             verification_data
@@ -36,12 +66,12 @@ export default class VerificationApi extends BaseApiService {
         }
       }
   `
+
     const response: Promise<
       OperationResult<{
         GetVerificationRequests: VerificationPaginator
       }>
     > = this.query(requestData, { first, page })
-    console.log("response", response)
 
     return response
   }

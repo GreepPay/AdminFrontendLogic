@@ -1,74 +1,92 @@
 import { $api } from "../../services"
 import Common from "./Common"
 import {
-  GeneralOverview,
-  BusinessOverview,
-  CustomerOverview,
-  TransactionOverview,
+  MutationUpdateWithdrawalStatusArgs,
+  Transaction,
+  TransactionPaginator,
 } from "../../gql/graphql"
+import { CombinedError } from "urql"
 
-export default class Transaction extends Common {
+export default class TransactionModule extends Common {
   constructor() {
     super()
   }
 
   // Base Variables
-  public GeneralOverview: GeneralOverview | undefined = undefined
-  public MerchantOverview: BusinessOverview | undefined = undefined
-  public CustomerOverview: CustomerOverview | undefined = undefined
-  public TransactionOverview: TransactionOverview | undefined = undefined
+  public WithdrawalsPaginator: TransactionPaginator | undefined = undefined
+  public WalletHistoryPaginator: TransactionPaginator | undefined = undefined
+  public TransactionsPaginator: TransactionPaginator | undefined = undefined
+  public SingleTransaction: Transaction | undefined = undefined
+  public Withdrawal: Transaction | undefined = undefined
 
   // Mutation Variables
+  public WithdrawalPayload: MutationUpdateWithdrawalStatusArgs | undefined
 
   // Queries
-  public GetGeneralOverview = async (
-    range: string = ""
-  ): Promise<GeneralOverview | undefined> => {
-    return $api.dashboard.GetGeneralOverview(range).then((response) => {
-      this.GeneralOverview = response.data?.GetGeneralOverview
-      return this.GeneralOverview
+  public GetWithdrawals = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<TransactionPaginator | undefined> => {
+    return $api.transaction.GetWithdrawals(first, page).then((response) => {
+      this.WithdrawalsPaginator = response.data?.GetWithdrawals
+      return this.WithdrawalsPaginator
     })
+  }
+  public GetWalletHistory = async (
+    first: number = 10,
+    page: number = 1,
+    orderBy?: any[],
+    where?: any
+  ): Promise<TransactionPaginator | undefined> => {
+    return $api.transaction
+      .GetWalletHistory(first, page, orderBy, where)
+      .then((response) => {
+        this.WalletHistoryPaginator = response.data?.GetWalletHistory
+        return this.WalletHistoryPaginator
+      })
   }
 
-  public GetMerchantOverview = async (
-    range: string = ""
-  ): Promise<BusinessOverview | undefined> => {
-    return $api.dashboard.GetMerchantOverview(range).then((response) => {
-      this.MerchantOverview = response.data?.GetMerchantOverview
-      return this.MerchantOverview
-    })
+  public GetTransactions = async (
+    first: number = 10,
+    page: number = 1,
+    orderBy?: any[],
+    where?: any,
+    whereUser?: any
+  ): Promise<TransactionPaginator | undefined> => {
+    return $api.transaction
+      .GetTransactions(first, page, orderBy, where, whereUser)
+      .then((response) => {
+        this.TransactionsPaginator = response.data?.GetTransactions
+        return this.TransactionsPaginator
+      })
   }
 
-  public GetCustomerOverview = async (
-    range: string = ""
-  ): Promise<CustomerOverview | undefined> => {
-    return $api.dashboard.GetCustomerOverview(range).then((response) => {
-      this.CustomerOverview = response.data?.GetCustomerOverview
-      return this.CustomerOverview
-    })
+  public GetSingleTransaction = async (
+    transactionUuid: string
+  ): Promise<Transaction | undefined> => {
+    return $api.transaction
+      .GetSingleTransaction(transactionUuid)
+      .then((response) => {
+        this.SingleTransaction = response.data?.GetSingleTransaction
+        return this.SingleTransaction
+      })
   }
 
-  public GetTransactionOverview = async (
-    range: string = ""
-  ): Promise<TransactionOverview | undefined> => {
-    return $api.dashboard.GetTransactionOverview(range).then((response) => {
-      this.TransactionOverview = response.data?.GetTransactionOverview
-      return this.TransactionOverview
-    })
-  }
   // Mutations
+  public UpdateWithdrawalStatus = () => {
+    if (this.WithdrawalPayload) {
+      return $api.transaction
+        .UpdateWithdrawalStatus(this.WithdrawalPayload)
+        .then((response) => {
+          if (response.data?.UpdateWithdrawalStatus) {
+            this.Withdrawal = response.data.UpdateWithdrawalStatus
+            return this.Withdrawal
+          }
+        })
+        .catch((error: CombinedError) => {
+          console.log("UpdateWithdrawalStatus error", error)
+          throw new Error(error.message)
+        })
+    }
+  }
 }
-
-// Mutations:
-
-// UpdateWithdrawalStatus
-
-// Queries:
-
-// GetSingleTransaction
-
-// GetTransactions
-
-// GetWalletHistory
-
-// GetWithdrawals

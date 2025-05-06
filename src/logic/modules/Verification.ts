@@ -1,6 +1,10 @@
 import { $api } from "../../services"
 import Common from "./Common"
-import { VerificationPaginator } from "../../gql/graphql"
+import {
+  MutationApproveRejectVerificationRequestArgs,
+  VerificationPaginator,
+} from "../../gql/graphql"
+import { CombinedError } from "urql"
 
 export default class Verification extends Common {
   constructor() {
@@ -11,6 +15,7 @@ export default class Verification extends Common {
   public VerificationPaginator: VerificationPaginator | undefined
 
   // Mutation Variables
+  public VerificationActionPayload?: MutationApproveRejectVerificationRequestArgs
 
   // Queries
   public GetVerificationRequests = async (
@@ -26,5 +31,21 @@ export default class Verification extends Common {
   }
 
   // Mutations
-  // ApproveRejectVerificationRequest
+  public ApproveRejectVerificationRequest = () => {
+    if (this.VerificationActionPayload) {
+      return $api.verification
+        .ApproveRejectVerificationRequest(this.VerificationActionPayload)
+        .then((response) => {
+          if (
+            typeof response.data?.ApproveRejectVerificationRequest === "boolean"
+          ) {
+            return response.data.ApproveRejectVerificationRequest
+          }
+        })
+        .catch((error: CombinedError) => {
+          console.log("ApproveRejectVerificationRequest error", error)
+          throw new Error(error.message)
+        })
+    }
+  }
 }

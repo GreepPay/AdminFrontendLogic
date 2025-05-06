@@ -62,14 +62,3 @@ export default class Notification extends Common {
     console.log("delivered notifications", notificationList)
   }
 }
-
-
-
-// Mutations:
-
-// MarkNotificationsAsRead
-
-// Queries:
-
-// GetNotifications
-

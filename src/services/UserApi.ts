@@ -1,8 +1,75 @@
 import { OperationResult } from "urql"
 import { BaseApiService } from "./common/BaseService"
-import { ProfilePaginator } from "src/gql/graphql"
+import { MutationUpdateUserRoleArgs, ProfilePaginator } from "src/gql/graphql"
 
 export default class UserApi extends BaseApiService {
+  //
+  public UpdateUserRole = (data: MutationUpdateUserRoleArgs) => {
+    const requestData = `
+    mutation UpdateUserRole($uuid: String!, $role: String!) {
+      UpdateUserRole(uuid: $uuid, role: $role)
+    }
+  `
+
+    const response: Promise<
+      OperationResult<{
+        UpdateUserRole: boolean
+      }>
+    > = this.mutation(requestData, data)
+
+    return response
+  }
+
+  public DeleteUser = (user_uuid: string) => {
+    const requestData = `
+    mutation DeleteUser($user_uuid: String!) {
+      DeleteUser(user_uuid: $user_uuid)
+    }
+  `
+
+    const response: Promise<
+      OperationResult<{
+        DeleteUser: boolean
+      }>
+    > = this.mutation(requestData, { user_uuid })
+
+    return response
+  }
+
+  public FreezeAccount = (user_uuid: string) => {
+    const requestData = `
+    mutation FreezeAccount($user_uuid: String!) {
+      FreezeAccount(user_uuid: $user_uuid)
+    }
+  `
+    const response: Promise<
+      OperationResult<{
+        FreezeAccount: boolean
+      }>
+    > = this.mutation(requestData, { user_uuid })
+
+    console.log("FreezeAccount response", response)
+
+    return response
+  }
+
+  public UnfreezeAccount = (user_uuid: string) => {
+    const requestData = `
+    mutation UnfreezeAccount($user_uuid: String!) {
+      UnfreezeAccount(user_uuid: $user_uuid)
+    }
+  `
+    const response: Promise<
+      OperationResult<{
+        UnfreezeAccount: boolean
+      }>
+    > = this.mutation(requestData, { user_uuid })
+
+    console.log("UnfreezeAccount response", response)
+
+    return response
+  }
+
   // Queries
   public GetAllAdminProfiles = () => {
     const requestData = `

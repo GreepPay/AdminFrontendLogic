@@ -4,13 +4,8 @@ import {
   User,
   AuthResponse,
   MutationSignInArgs,
-  MutationUpdateUserRoleArgs,
-  MutationDeleteUserArgs,
-  MutationMarkNotificationsAsReadArgs,
-  MutationFreezeAccountArgs,
-  MutationUnfreezeAccountArgs,
-  MutationApproveRejectVerificationRequestArgs,
-  MutationUpdateWithdrawalStatusArgs,
+  MutationSignUpArgs,
+  MutationActivateAdminAccountArgs,
 } from "src/gql/graphql"
 
 export default class AuthApi extends BaseApiService {
@@ -94,16 +89,122 @@ export default class AuthApi extends BaseApiService {
     return response
   }
 
-  //   public ResendEmailOTP = (data: MutationResendEmailOtpArgs) => {
-  //     const requestData = `
-  //     mutation ResendEmailOTP($email: String!) {
-  //       ResendEmailOTP(email: $email)
-  //     }
-  //   `
+  public SignUp = (data: MutationSignUpArgs) => {
+    const requestData = `
+    mutation SignUp($email: String!) {
+      SignUp(email: $email) {
+        id
+        uuid
+        first_name
+        last_name
+        username
+        email
+        phone
+        email_verified_at
+        phone_verified_at
+        status
+        profile {
+          avatar
+          gender
+          address
+        }
+        wallet {
+          id
+          balance
+          currency
+        }
+        created_at
+        updated_at
+        role {
+          id
+          name
+        }
+      }
+    }
+  `
+    const response: Promise<
+      OperationResult<{
+        SignUp: User
+      }>
+    > = this.mutation(requestData, data)
 
-  //     const response: Promise<OperationResult<{ ResendEmailOTP: boolean }>> =
-  //       this.mutation(requestData, data)
+    console.log("response", response)
 
-  //     return response
-  //   }
+    return response
+  }
+
+  public ActivateAdminAccount = (data: MutationActivateAdminAccountArgs) => {
+    const requestData = `
+    mutation ActivateAdminAccount(
+      $email: String!
+      $otp: String!
+      $first_name: String!
+      $last_name: String!
+      $password: String!
+    ) {
+      ActivateAdminAccount(
+        email: $email
+        otp: $otp
+        first_name: $first_name
+        last_name: $last_name
+        password: $password
+      ) {
+        id
+        uuid
+        first_name
+        last_name
+        username
+        email
+        phone
+        email_verified_at
+        phone_verified_at
+        status
+        profile {
+          avatar
+          gender
+          address
+        }
+        wallet {
+          id
+          balance
+          currency
+        }
+        created_at
+        updated_at
+        role {
+          id
+          name
+        }
+      }
+    }
+  `
+
+    const response: Promise<
+      OperationResult<{
+        ActivateAdminAccount: User
+      }>
+    > = this.mutation(requestData, data)
+
+    console.log("response", response)
+
+    return response
+  }
+
+  public AdminLogout = () => {
+    const requestData = `
+    mutation AdminLogout {
+      AdminLogout
+    }
+  `
+
+    const response: Promise<
+      OperationResult<{
+        AdminLogout: boolean
+      }>
+    > = this.mutation(requestData, {})
+
+    console.log("response", response)
+
+    return response
+  }
 }

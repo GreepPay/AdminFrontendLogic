@@ -24,10 +24,4 @@ export default class Wallet extends Common {
       return this.WalletPaginator
     })
   }
-
-  // Mutations
 }
-
-// Queries:
-
-// GetWallets

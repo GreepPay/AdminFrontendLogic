@@ -1,13 +1,20 @@
 import { $api } from "../../services"
 import { CombinedError } from "urql"
 import Common from "./Common"
-import { MutationSignInArgs, User } from "src/gql/graphql"
+import {
+  MutationActivateAdminAccountArgs,
+  MutationSignInArgs,
+  User,
+} from "src/gql/graphql"
 
 export default class Auth extends Common {
   constructor() {
     super()
     this.AccessToken = localStorage.getItem("access_token")
     const authUserRaw = localStorage.getItem("auth_user")
+
+    console.log("authUserRaw", authUserRaw)
+
     try {
       this.AuthUser =
         authUserRaw && authUserRaw !== "undefined"
@@ -26,11 +33,10 @@ export default class Auth extends Common {
 
   // Mutation Variables
   public SignInPayload: MutationSignInArgs | undefined
-  public ActivateAccountPayload: MutationSignInArgs | undefined
+  public ActivateAccountPayload: MutationActivateAdminAccountArgs | undefined
 
   // Private methods
   private SetUpAuth = (AuthResponse: any | undefined) => {
-    console.log("AuthResponse", AuthResponse)
     if (AuthResponse) {
       this.AccessToken = AuthResponse.token
       this.AuthUser = this.updatedData(this.AuthUser, AuthResponse.user)
@@ -71,13 +77,13 @@ export default class Auth extends Common {
     }
   }
 
-  public ActivateAccount = (formIsValid: boolean) => {
-    if (formIsValid && this.SignInPayload) {
+  public ActivateAdminAccount = (formIsValid: boolean) => {
+    if (formIsValid && this.ActivateAccountPayload) {
       return $api.auth
-        .SignIn(this.SignInPayload)
+        .ActivateAdminAccount(this.ActivateAccountPayload)
         .then((response) => {
-          if (response.data?.SignIn) {
-            this.SetUpAuth(response.data.SignIn)
+          if (response.data?.ActivateAdminAccount) {
+            this.SetUpAuth(response.data.ActivateAdminAccount)
             return response.data
           }
         })
