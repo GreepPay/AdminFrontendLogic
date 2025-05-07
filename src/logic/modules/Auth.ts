@@ -109,16 +109,16 @@ export default class Auth extends Common {
   }
 
   public AdminLogout = () => {
-    $api.auth
-      .AdminLogout()
-      .then(() => {
-        this.AccessToken = ""
-        this.AuthUser = undefined
-        localStorage.clear()
-        Logic.Common.GoToRoute("/auth/login")
-      })
-      .catch((error: CombinedError) => {
-        throw new Error(error.message)
-      })
+    this.AccessToken = ""
+    this.AuthUser = undefined
+    localStorage.clear()
+    Logic.Common.GoToRoute("/auth/login")
+    // $api.auth
+    //   .AdminLogout()
+    //   .then(() => {
+    //   })
+    //   .catch((error: CombinedError) => {
+    //     throw new Error(error.message)
+    //   })
   }
 }

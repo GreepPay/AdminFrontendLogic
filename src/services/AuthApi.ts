@@ -4,7 +4,6 @@ import {
   User,
   AuthResponse,
   MutationSignInArgs,
-  MutationSignUpArgs,
   MutationActivateAdminAccountArgs,
 } from "src/gql/graphql"
 
@@ -24,8 +23,7 @@ export default class AuthApi extends BaseApiService {
             description
           }  
           created_at
-          first_name
-          email_verified_at
+          first_name 
           last_name
           status
           updated_at
@@ -62,8 +60,7 @@ export default class AuthApi extends BaseApiService {
               description
             }  
             created_at
-            first_name
-            email_verified_at
+            first_name 
             last_name
             status
             updated_at
@@ -85,24 +82,13 @@ export default class AuthApi extends BaseApiService {
     const requestData = `
     mutation SignUp($email: String!) {
       SignUp(email: $email) {
-          id
-          email
-          uuid
-          role {
-            id
-            name
-            created_at
-            description
-          }  
-          created_at
-          first_name
-          email_verified_at
-          last_name
-          status
-          updated_at
-          username 
-          phone
-          phone_verified_at
+      id
+      email
+          profile {
+      user_type
+      verification_status
+      }
+
       }
     }
   `
@@ -131,24 +117,15 @@ export default class AuthApi extends BaseApiService {
         last_name: $last_name
         password: $password
       ) {
-         id
-          email
-          uuid
-          role {
-            id
-            name
-            created_at
-            description
-          }  
+        id
+        email
+        uuid
+        role {
+          id
+          name
           created_at
-          first_name
-          email_verified_at
-          last_name
-          status
-          updated_at
-          username 
-          phone
-          phone_verified_at
+          description
+        }  
       }
     }
   `
