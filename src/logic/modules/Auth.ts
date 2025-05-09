@@ -51,12 +51,11 @@ export default class Auth extends Common {
 
   // Queries
   public GetAuthUser = async (): Promise<User | undefined> => {
+    // Logic.Common.showLoader({ loading: true, show: true })
     return $api.auth
       .GetAuthUser()
       .then((response) => {
         this.AuthUser = response.data?.GetAuthUser
-        console.log(this.AuthUser)
-
         return this.AuthUser
       })
       .catch((error: CombinedError) => {
@@ -65,10 +64,14 @@ export default class Auth extends Common {
         this.AuthUser = undefined
         throw error
       })
+      .finally(() => {
+        Logic.Common.hideLoader()
+      })
   }
 
   // Mutations
   public SignIn = (formIsValid: boolean) => {
+    // Logic.Common.showLoader({ loading: true, show: true })
     if (formIsValid && this.SignInPayload) {
       return $api.auth
         .SignIn(this.SignInPayload)
@@ -81,10 +84,14 @@ export default class Auth extends Common {
         .catch((error: CombinedError) => {
           throw new Error(error.message)
         })
+        .finally(() => {
+          Logic.Common.hideLoader()
+        })
     }
   }
 
   public ActivateAdminAccount = (formIsValid: boolean) => {
+    // Logic.Common.showLoader({ loading: true, show: true })
     if (formIsValid && this.ActivateAccountPayload) {
       return $api.auth
         .ActivateAdminAccount(this.ActivateAccountPayload)
@@ -94,10 +101,14 @@ export default class Auth extends Common {
         .catch((error: CombinedError) => {
           throw new Error(error.message)
         })
+        .finally(() => {
+          Logic.Common.hideLoader()
+        })
     }
   }
 
   public SignUp = async (email: string): Promise<User | undefined> => {
+    // Logic.Common.showLoader({ loading: true, show: true })
     return $api.auth
       .SignUp(email)
       .then((response) => {
@@ -105,6 +116,9 @@ export default class Auth extends Common {
       })
       .catch((error: CombinedError) => {
         throw new Error(error.message)
+      })
+      .finally(() => {
+        Logic.Common.hideLoader()
       })
   }
 

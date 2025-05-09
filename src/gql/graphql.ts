@@ -197,6 +197,7 @@ export type Mutation = {
   FreezeAccount: Scalars['Boolean'];
   /** Mark specific notifications as read for the authenticated user. */
   MarkNotificationsAsRead?: Maybe<Scalars['Boolean']>;
+  ResendEmailOTP: Scalars['Boolean'];
   SignIn: AuthResponse;
   SignUp: User;
   UnfreezeAccount: Scalars['Boolean'];
@@ -233,6 +234,11 @@ export type MutationFreezeAccountArgs = {
 
 export type MutationMarkNotificationsAsReadArgs = {
   notification_ids: Array<Scalars['Int']>;
+};
+
+
+export type MutationResendEmailOtpArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -1309,6 +1315,8 @@ export type Wallet = {
   debited_amount: Scalars['Float'];
   /** Debited Point Amount */
   debited_point_amount: Scalars['Float'];
+  /** Wallet ID */
+  id?: Maybe<Scalars['Int']>;
   /** Locked Balance */
   locked_balance: Scalars['Float'];
   /** Point Balance */

@@ -18,6 +18,14 @@ export default class Dashboard extends Common {
   public CustomerOverview: CustomerOverview | undefined = undefined
   public TransactionOverview: TransactionOverview | undefined = undefined
 
+  // Analytics data
+  public AnalyticsData: {
+    allTime?: TransactionOverview
+    daily?: TransactionOverview
+    weekly?: TransactionOverview
+    monthly?: TransactionOverview
+  } = {}
+
   // Mutation Variables
 
   // Queries
@@ -55,5 +63,30 @@ export default class Dashboard extends Common {
       this.TransactionOverview = response.data?.GetTransactionOverview
       return this.TransactionOverview
     })
+  }
+
+  public GetAnalyticsData = async (): Promise<{
+    allTime?: TransactionOverview
+    daily?: TransactionOverview
+    weekly?: TransactionOverview
+    monthly?: TransactionOverview
+  }> => {
+    const timeframes = ["", "daily", "weekly", "monthly"]
+    const keys = ["allTime", "daily", "weekly", "monthly"]
+
+    const results = await Promise.all(
+      timeframes.map((range) =>
+        $api.dashboard
+          .GetTransactionOverview(range)
+          .then((res) => res.data?.GetTransactionOverview)
+      )
+    )
+
+    keys.forEach((key, index) => {
+      this.AnalyticsData[key as keyof typeof this.AnalyticsData] =
+        results[index]
+    })
+
+    return this.AnalyticsData
   }
 }

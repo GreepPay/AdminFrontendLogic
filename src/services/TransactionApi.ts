@@ -33,7 +33,7 @@ export default class TransactionApi extends BaseApiService {
         updated_at
         user {
           first_name
-          last_name
+          last_name 
         }
       }
     }
@@ -101,17 +101,30 @@ export default class TransactionApi extends BaseApiService {
   // $where: QueryGetWalletHistoryWhereWhereConditions
   // , orderBy: $orderBy, where: $where
   public GetWalletHistory = (
+    wallet_id: string,
     first: number,
     page: number,
-    orderBy?: any[],
-    where?: any
+    orderBy?: any[]
   ) => {
     const requestData = `
     query GetWalletHistory(
       $first: Int!
-      $page: Int
+      $page: Int 
     ) {
-      GetWalletHistory(first: $first, page: $page) {
+      GetWalletHistory(
+      first: $first
+      page: $page
+      where: {
+        column: WALLET_ID
+        operator: EQ
+        value: ${wallet_id}
+      } 
+      orderBy: [
+        {
+          column: CREATED_AT
+          order: DESC
+        }
+      ]) {
         paginatorInfo {
           firstItem
           lastItem
@@ -142,6 +155,9 @@ export default class TransactionApi extends BaseApiService {
           user {
             first_name
             last_name
+            role {
+              name
+            }
           }
         }
       }
@@ -151,9 +167,7 @@ export default class TransactionApi extends BaseApiService {
       OperationResult<{
         GetWalletHistory: TransactionPaginator
       }>
-    > = this.query(requestData, { first, page, orderBy, where })
-
-    console.log("response", response)
+    > = this.query(requestData, { first, page })
 
     return response
   }
@@ -168,9 +182,9 @@ export default class TransactionApi extends BaseApiService {
   public GetTransactions = (
     first: number,
     page: number,
+    whereUser?: any,
     orderBy?: any[],
-    where?: any,
-    whereUser?: any
+    where?: any
   ) => {
     const requestData = `
     query GetTransactions(
@@ -179,8 +193,18 @@ export default class TransactionApi extends BaseApiService {
     ) {
       GetTransactions(
         first: $first
-        page: $page
-        
+        page: $page  
+        ${
+          whereUser
+            ? `whereUser: {
+                 OR: [
+        { column: FIRST_NAME, operator: LIKE, value: ${whereUser} }
+        { column: LAST_NAME, operator: LIKE, value: ${whereUser} }
+        { column: EMAIL, operator: LIKE, value: ${whereUser}}
+        ] }
+      `
+            : ""
+        }
       ) {
         paginatorInfo {
           firstItem
@@ -212,6 +236,9 @@ export default class TransactionApi extends BaseApiService {
           user {
             first_name
             last_name
+            role {
+              name
+            }
           }
         }
       }
@@ -221,10 +248,8 @@ export default class TransactionApi extends BaseApiService {
       OperationResult<{
         GetTransactions: TransactionPaginator
       }>
-    > = this.query(requestData, { first, page, orderBy, where, whereUser })
-
-    console.log("response", response)
-
+    > = this.query(requestData, { first, page, whereUser, orderBy, where })
+ 
     return response
   }
 
@@ -253,6 +278,9 @@ export default class TransactionApi extends BaseApiService {
         user {
           first_name
           last_name
+           role {
+              name
+            }
         }
       }
     }

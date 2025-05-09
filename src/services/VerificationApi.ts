@@ -29,9 +29,7 @@ export default class VerificationApi extends BaseApiService {
         ApproveRejectVerificationRequest: boolean
       }>
     > = this.mutation(requestData, data)
-
-    console.log("ApproveRejectVerificationRequest response", response)
-
+ 
     return response
   }
 

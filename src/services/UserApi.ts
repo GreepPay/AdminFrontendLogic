@@ -47,9 +47,7 @@ export default class UserApi extends BaseApiService {
         FreezeAccount: boolean
       }>
     > = this.mutation(requestData, { user_uuid })
-
-    console.log("FreezeAccount response", response)
-
+ 
     return response
   }
 
@@ -65,77 +63,11 @@ export default class UserApi extends BaseApiService {
       }>
     > = this.mutation(requestData, { user_uuid })
 
-    console.log("UnfreezeAccount response", response)
-
+     
     return response
   }
 
   // Queries
-  // public GetAllAdminProfiles = () => {
-  //   const requestData = `
-  //     query GetProfiles {
-  //       GetProfiles(
-  //         first: 10
-  //         # where: {
-  //         #   column: USER_TYPE
-  //         #   operator: EQ
-  //         #   value: "Business"
-  //         # }
-  //         # whereUser: {
-  //         #   column: FIRST_NAME
-  //         #   operator: LIKE
-  //         #   value: "John"
-  //         # }
-  //         # whereUserRole: {
-  //         #   column: NAME
-  //         #   operator: EQ
-  //         #   value: "Admin"
-  //         # }
-  //       ) {
-  //         paginatorInfo {
-  //           currentPage
-  //           lastPage
-  //           perPage
-  //           total
-  //           hasMorePages
-  //         }
-  //         data {
-  //           auth_user_id
-  //           user_type
-  //           verification_status
-  //           default_currency
-  //            updated_at
-  //           user {
-  //             uuid
-  //             first_name
-  //             email
-  //             last_name
-  //             profile {
-  //               profile_picture
-  //             }
-  //             role {
-  //               name 
-  //               id
-  //               description
-  //             }
-  //           } 
-  //           # customer {
-  //           #   country
-  //           # }
-  //         }
-  //       }
-  //     } 
-  // `
-
-  //   const response: Promise<
-  //     OperationResult<{
-  //       GetProfiles: any
-  //     }>
-  //   > = this.query(requestData, {})
-
-  //   return response
-  // }
-
   //
   public GetCustomerProfiles = (first: number, page: number) => {
     const requestData = `

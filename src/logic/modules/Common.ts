@@ -37,8 +37,6 @@ export default class Common {
   })
 
   public SetRouter = (router: Router) => {
-    console.log(router)
-
     this.router = router
   }
 
@@ -71,9 +69,6 @@ export default class Common {
   }
 
   public GoToRoute = (path: string) => {
-    console.log(path)
-    console.log(this.router)
-
     this.router?.push(path)
   }
 
@@ -83,14 +78,14 @@ export default class Common {
     type: "success",
   })
 
-  public encryptData = (jsonData: object, secretKey: string): string => {
-    return CryptoJS.AES.encrypt(JSON.stringify(jsonData), secretKey).toString()
-  }
+  // public encryptData = (jsonData: object, secretKey: string): string => {
+  //   return CryptoJS.AES.encrypt(JSON.stringify(jsonData), secretKey).toString()
+  // }
 
-  public decryptData = (encryptedData: string, secretKey: string): object => {
-    const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey)
-    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
-  }
+  // public decryptData = (encryptedData: string, secretKey: string): object => {
+  //   const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey)
+  //   return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
+  // }
 
   public showAlert = (alertSetup: AlertSetup) => {
     const showAlertHandler = (wait_until_next_alert = false) => {
@@ -410,7 +405,7 @@ export default class Common {
                 const routeId = []
                 if (rule.useRouteId) {
                   routeId.push(routeTo.params.id.toString())
-                }
+                 }
 
                 if (rule.useRouteQuery) {
                   const allQueries: any[] = []

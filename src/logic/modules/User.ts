@@ -1,7 +1,6 @@
 import { $api } from "../../services"
 import { CombinedError } from "urql"
-import Common from "./Common"
-import { Logic } from ".."
+import Common from "./Common" 
 import {
   MutationActivateAdminAccountArgs,
   MutationUpdateUserRoleArgs,
@@ -76,8 +75,7 @@ export default class User extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("UpdateUserRole error", error)
-          throw new Error(error.message)
+           throw new Error(error.message)
         })
     }
   }
@@ -107,8 +105,7 @@ export default class User extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("FreezeAccount error", error)
-          throw new Error(error.message)
+           throw new Error(error.message)
         })
     }
   }
@@ -123,8 +120,7 @@ export default class User extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("UnfreezeAccount error", error)
-          throw new Error(error.message)
+            throw new Error(error.message)
         })
     }
   }

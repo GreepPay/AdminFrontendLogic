@@ -1,8 +1,7 @@
 import { $api } from "../../services"
 import { CombinedError } from "urql"
 import Common from "./Common"
-import { Logic } from ".."
-import { Profile, WalletPaginator } from "../../gql/graphql"
+import { WalletPaginator } from "../../gql/graphql"
 
 export default class Wallet extends Common {
   constructor() {

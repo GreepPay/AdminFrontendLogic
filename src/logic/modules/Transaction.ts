@@ -33,13 +33,13 @@ export default class TransactionModule extends Common {
     })
   }
   public GetWalletHistory = async (
+    wallet_id: string,
     first: number = 10,
     page: number = 1,
-    orderBy?: any[],
-    where?: any
+    orderBy?: any[]
   ): Promise<TransactionPaginator | undefined> => {
     return $api.transaction
-      .GetWalletHistory(first, page, orderBy, where)
+      .GetWalletHistory(wallet_id, first, page)
       .then((response) => {
         this.WalletHistoryPaginator = response.data?.GetWalletHistory
         return this.WalletHistoryPaginator
@@ -49,12 +49,10 @@ export default class TransactionModule extends Common {
   public GetTransactions = async (
     first: number = 10,
     page: number = 1,
-    orderBy?: any[],
-    where?: any,
     whereUser?: any
   ): Promise<TransactionPaginator | undefined> => {
     return $api.transaction
-      .GetTransactions(first, page, orderBy, where, whereUser)
+      .GetTransactions(first, page, whereUser)
       .then((response) => {
         this.TransactionsPaginator = response.data?.GetTransactions
         return this.TransactionsPaginator
@@ -84,7 +82,6 @@ export default class TransactionModule extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("UpdateWithdrawalStatus error", error)
           throw new Error(error.message)
         })
     }

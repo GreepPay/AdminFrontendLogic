@@ -59,6 +59,5 @@ export default class Notification extends Common {
 
   public getDeliveredNotifications = async () => {
     const notificationList = await PushNotifications.getDeliveredNotifications()
-    console.log("delivered notifications", notificationList)
-  }
+     }
 }

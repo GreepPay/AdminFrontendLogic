@@ -16,6 +16,9 @@ export default class AuthApi extends BaseApiService {
           id
           email
           uuid
+          profile {
+                profile_picture
+              }
           role {
             id
             name
@@ -53,6 +56,9 @@ export default class AuthApi extends BaseApiService {
             id
             email
             uuid
+            profile {
+                profile_picture
+              }
             role {
               id
               name
@@ -84,7 +90,8 @@ export default class AuthApi extends BaseApiService {
       SignUp(email: $email) {
       id
       email
-          profile {
+          profile { 
+                profile_picture 
       user_type
       verification_status
       }
@@ -136,8 +143,7 @@ export default class AuthApi extends BaseApiService {
       }>
     > = this.mutation(requestData, data)
 
-    console.log("response", response)
-
+    
     return response
   }
 
@@ -153,9 +159,7 @@ export default class AuthApi extends BaseApiService {
         AdminLogout: boolean
       }>
     > = this.mutation(requestData, {})
-
-    console.log("response", response)
-
+ 
     return response
   }
 }

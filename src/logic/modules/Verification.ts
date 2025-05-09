@@ -43,8 +43,7 @@ export default class Verification extends Common {
           }
         })
         .catch((error: CombinedError) => {
-          console.log("ApproveRejectVerificationRequest error", error)
-          throw new Error(error.message)
+            throw new Error(error.message)
         })
     }
   }

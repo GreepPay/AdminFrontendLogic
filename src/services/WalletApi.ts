@@ -17,7 +17,8 @@ export default class WalletApi extends BaseApiService {
             total
             hasMorePages
           } 
-        data {
+        data {  
+          id
           cash_per_point
           cash_point_balance
           created_at
