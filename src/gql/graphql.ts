@@ -479,7 +479,9 @@ export type QueryGetTransactionsArgs = {
   first: Scalars['Int'];
   orderBy?: InputMaybe<Array<QueryGetTransactionsOrderByOrderByClause>>;
   page?: InputMaybe<Scalars['Int']>;
+  search?: InputMaybe<Scalars['String']>;
   where?: InputMaybe<QueryGetTransactionsWhereWhereConditions>;
+  whereProfile?: InputMaybe<QueryGetTransactionsWhereProfileWhereHasConditions>;
   whereUser?: InputMaybe<QueryGetTransactionsWhereUserWhereHasConditions>;
 };
 
@@ -656,6 +658,39 @@ export enum QueryGetTransactionsWhereColumn {
   Reference = 'REFERENCE',
   Status = 'STATUS'
 }
+
+/** Allowed column names for Query.GetTransactions.whereProfile. */
+export enum QueryGetTransactionsWhereProfileColumn {
+  UserType = 'USER_TYPE'
+}
+
+/** Dynamic WHERE conditions for the `whereProfile` argument of the query `GetTransactions`. */
+export type QueryGetTransactionsWhereProfileWhereHasConditions = {
+  /** A set of conditions that requires all conditions to match. */
+  AND?: InputMaybe<Array<QueryGetTransactionsWhereProfileWhereHasConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: InputMaybe<QueryGetTransactionsWhereProfileWhereHasConditionsRelation>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: InputMaybe<Array<QueryGetTransactionsWhereProfileWhereHasConditions>>;
+  /** The column that is used for the condition. */
+  column?: InputMaybe<QueryGetTransactionsWhereProfileColumn>;
+  /** The operator that is used for the condition. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: InputMaybe<Scalars['Mixed']>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `whereProfile` argument of the query `GetTransactions`. */
+export type QueryGetTransactionsWhereProfileWhereHasConditionsRelation = {
+  /** The amount to test. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: InputMaybe<QueryGetTransactionsWhereProfileWhereHasConditions>;
+  /** The comparison operator to test against the amount. */
+  operator?: InputMaybe<SqlOperator>;
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+};
 
 /** Allowed column names for Query.GetTransactions.whereUser. */
 export enum QueryGetTransactionsWhereUserColumn {
@@ -1123,6 +1158,7 @@ export type Transaction = {
   dr_or_cr: Scalars['String'];
   /** Gateway (default: 'Greep-wallet') */
   gateway: Scalars['String'];
+  profile?: Maybe<Profile>;
   /** Transaction Reference */
   reference: Scalars['String'];
   /** State of the transaction ('active' or 'archived') */
