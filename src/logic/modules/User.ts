@@ -6,6 +6,11 @@ import {
   MutationUpdateUserRoleArgs,
   Profile,
   ProfilePaginator,
+  Customer,
+  Business,
+  EventHostStatsPaginator,
+  UserTicketStatsPaginator,
+  ExchangeAdStatsPaginator,
 } from "../../gql/graphql"
 
 export default class User extends Common {
@@ -17,6 +22,9 @@ export default class User extends Common {
   public UserProfile: Profile | undefined = undefined
   public AdminProfilePaginator: ProfilePaginator | undefined
   public CustomerProfilePaginator: ProfilePaginator | undefined
+  public EventHostStatsPaginator: EventHostStatsPaginator | undefined
+  public UserTicketStatsPaginator: UserTicketStatsPaginator | undefined
+  public ExchangeAdStatsPaginator:ExchangeAdStatsPaginator | undefined
   public MerchantProfilePaginator: ProfilePaginator | undefined
   public UpdateRoleResult?: boolean
 
@@ -42,7 +50,40 @@ export default class User extends Common {
       return this.CustomerProfilePaginator
     })
   }
+  
+  public GetEventHostStats = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<any | undefined> => {
+    return $api.user.GetEventHosts(first, page).then((response) => {
+      this.EventHostStatsPaginator = response.data?.GetEventHosts 
+      return this.EventHostStatsPaginator
+    })
+  }
 
+  public GetEventAttendees = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<any | undefined> => {
+    return $api.user.GetEventAttendees(first, page).then((response) => {
+      this.UserTicketStatsPaginator = response.data?.GetEventAttendees
+      return this.UserTicketStatsPaginator
+    })
+  }
+
+  
+  
+  public GetExchangeAds = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<any | undefined> => {
+    return $api.user.GetExchangeAds(first, page).then((response) => {
+      this.ExchangeAdStatsPaginator = response.data?.GetExchangeAds
+      return this.ExchangeAdStatsPaginator
+    })
+  }
+  
+  
   public GetMerchantProfiles = async (
     first: number = 10,
     page: number = 1

@@ -11,9 +11,11 @@ import {
 import { Logic } from ".."
 import { AlertSetup, FetchRule, LoaderSetup, ModalSetup } from "../types/common"
 import CryptoJS from "crypto-js"
+import { Observable } from "./Observable";
 
 export default class Common {
   public router: Router | undefined = undefined
+   private _observables = new Map<string, Observable<any>>();
 
   public route: RouteLocationNormalizedLoaded | undefined = undefined
 
@@ -86,6 +88,53 @@ export default class Common {
   //   const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey)
   //   return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
   // }
+  constructor() {
+    // Init observable wrappers only for selected properties
+    this.defineReactiveProperty("router", undefined);
+    this.defineReactiveProperty("route", undefined);
+    this.defineReactiveProperty("apiUrl", undefined);
+    this.defineReactiveProperty("watchInterval", undefined);
+    this.defineReactiveProperty("loadingState", false);
+    this.defineReactiveProperty("showBottomNav", false);
+    this.defineReactiveProperty("forcePageTransparency", false);
+    this.defineReactiveProperty("loaderSetup", this.loaderSetup);
+    this.defineReactiveProperty("modalSetup", this.modalSetup);
+    this.defineReactiveProperty("alertSetup", this.alertSetup);
+    this.defineReactiveProperty("currentLayout", this.currentLayout);
+  }
+
+  protected defineReactiveProperty<T = any>(prop: string, initialValue: T) {
+    const obs = new Observable<T>(initialValue);
+    this._observables.set(prop, obs);
+
+    Object.defineProperty(this, prop, {
+      get() {
+        return obs.value;
+      },
+      set(val: T) {
+        obs.value = val;
+      },
+      configurable: true,
+      enumerable: true,
+    });
+  }
+
+  public encryptData = (jsonData: object, secretKey: string): string => {
+    return CryptoJS.AES.encrypt(JSON.stringify(jsonData), secretKey).toString();
+  };
+
+  public decryptData = (encryptedData: string, secretKey: string): object => {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  };
+
+  public base64ToBlob = async (url: string) => {
+    return fetch(url)
+      .then((res) => res.blob())
+      .then((data) => {
+        return data;
+      });
+  };
 
   public showAlert = (alertSetup: AlertSetup) => {
     const showAlertHandler = (wait_until_next_alert = false) => {

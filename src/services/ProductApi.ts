@@ -1,0 +1,385 @@
+import { BaseApiService } from "./common/BaseService";
+import { OperationResult } from "urql";
+import {
+  Category,
+  PaginatorInfo,
+  Product,
+  ProductPaginator,
+  Ticket, 
+  TicketPaginator
+} from "../gql/graphql";
+
+export default class ProductApi extends BaseApiService {
+  // #region QUERIES
+  public GetProducts = (
+    page: number,
+    count: number,
+    orderType = "CREATED_AT",
+    order: "ASC" | "DESC",
+    whereQuery = ""
+  ) => {
+    const requestData = `
+      query GetProducts(
+        $page: Int!,
+        $count: Int!
+      ){
+        GetProducts(
+          first: $count,
+          page: $page,
+          orderBy: {
+            column: ${orderType ? orderType : "CREATED_AT"},
+            order: ${order}
+          }
+          ${whereQuery ? `where: ${whereQuery}` : ""}
+        ) {
+          paginatorInfo {
+            total
+            perPage
+            lastPage
+            lastItem
+            hasMorePages
+            firstItem
+            currentPage
+            count
+          }
+          data {
+          uuid
+          id
+          businessId
+          business {
+            id
+          }
+          sku
+          name
+          slug
+          description
+          price
+          currency
+          taxCode
+          type
+          status
+          variants
+          inventoryCount
+          stockThreshold
+          isBackorderAllowed
+          downloadUrl
+          downloadLimit
+          license
+          fileInfo
+          dimensions
+          weight
+          billingInterval
+          trialPeriodDays
+          gracePeriod
+          renewal
+          features
+          eventType
+          eventStartDate
+          eventEndDate
+          venueName
+          eventOnlineUrl
+          eventLocation
+          eventCapacity
+          eventRegisteredCount
+          eventWaitlistEnabled
+          metaTitle
+          metaDescription
+          isVisible
+          images
+          createdAt
+          updatedAt
+          }
+        }
+      }
+    `;
+    const response: Promise<
+      OperationResult<{
+        GetProducts: ProductPaginator;
+      }>
+    > = this.query(requestData, {
+      page,
+      count,
+    });
+
+    return response;
+  };
+
+  public GetProduct = (uuid: string) => {
+    const requestData = `
+      query GetProduct($uuid: String!) {
+        GetProduct(uuid: $uuid) {
+        uuid
+        id
+        businessId
+        business {
+          id
+          business_name
+          logo
+        }
+        sku
+        name
+        slug
+        description
+        price
+        currency
+        taxCode
+        type
+        status
+        variants
+        inventoryCount
+        stockThreshold
+        isBackorderAllowed
+        downloadUrl
+        downloadLimit
+        license
+        fileInfo
+        dimensions
+        weight
+        billingInterval
+        trialPeriodDays
+        gracePeriod
+        renewal
+        features
+        eventType
+        eventStartDate
+        eventEndDate
+        venueName
+        eventOnlineUrl
+        eventLocation
+        eventCapacity
+        eventRegisteredCount
+        eventWaitlistEnabled
+        metaTitle
+        metaDescription
+        isVisible
+        images
+        createdAt
+        updatedAt
+        }
+      }
+    `;
+    const response: Promise<
+      OperationResult<{
+        GetProduct: Product;
+      }>
+    > = this.query(requestData, {
+      uuid,
+    });
+
+    return response;
+  };
+
+  public GetSingleProduct = (where: Record<string, any>) => {
+    const requestData = `
+    query GetSingleProduct($where: QueryGetSingleProductWhereWhereConditions) {
+      GetSingleProduct(where: $where) {
+         uuid
+        id
+        businessId
+        business {
+          id
+        }
+        sku
+        name
+        slug
+        description
+        price
+        currency
+        taxCode
+        type
+        status
+        variants
+        inventoryCount
+        stockThreshold
+        isBackorderAllowed
+        downloadUrl
+        downloadLimit
+        license
+        fileInfo
+        dimensions
+        weight
+        billingInterval
+        trialPeriodDays
+        gracePeriod
+        renewal
+        features
+        eventType
+        eventStartDate
+        eventEndDate
+        venueName
+        eventOnlineUrl
+        eventLocation
+        eventCapacity
+        eventRegisteredCount
+        eventWaitlistEnabled
+        metaTitle
+        metaDescription
+        isVisible
+        images
+        createdAt
+        updatedAt
+      }
+    }
+  `;
+
+    const response: Promise<
+      OperationResult<{
+        GetSingleProduct: Product;
+      }>
+    > = this.query(requestData, { where });
+
+    return response;
+  };
+
+  public GetCategories = (
+    first: number,
+    page: number,
+    orderBy: { column: "NAME"; order: "ASC" | "DESC" }[]
+  ) => {
+    const requestData = `
+    query GetCategories(
+      $first: Int!
+      $page: Int
+      $orderBy: [QueryGetCategoriesOrderByOrderByClause!]
+    ) {
+      GetCategories(orderBy: $orderBy, first: $first, page: $page) {
+        paginatorInfo {
+          firstItem
+          lastItem
+          currentPage
+          lastPage
+          perPage
+          total
+          hasMorePages
+        }
+        data {
+          id
+          name
+          description
+          parentId
+        }
+      }
+    }
+  `;
+
+    const response: Promise<
+      OperationResult<{
+        GetCategories: {
+          paginatorInfo: PaginatorInfo;
+          data: Category[];
+        };
+      }>
+    > = this.query(requestData, { orderBy, first, page });
+
+    return response;
+  };
+  
+  
+  
+  
+  public GetMyTickets = (first: number, page: number) => {
+    const requestData = `
+      query GetMyTickets($first: Int!, $page: Int!) {
+        GetMyTickets(first: $first, page: $page) {
+          paginatorInfo {
+            firstItem
+            lastItem
+            currentPage
+            lastPage
+            perPage
+            total
+            hasMorePages
+          }
+          data {
+            id
+            uuid
+            ticketType
+            price
+            status
+            createdAt
+            updatedAt
+            
+            product {
+              uuid
+              id
+              businessId
+              business {
+                id
+                business_name
+                logo
+              }
+              sku
+              name
+              slug
+              description
+              price
+              currency
+              taxCode
+              type
+              status
+              variants
+              inventoryCount
+              stockThreshold
+              isBackorderAllowed
+              downloadUrl
+              downloadLimit
+              license
+              fileInfo
+              dimensions
+              weight
+              billingInterval
+              trialPeriodDays
+              gracePeriod
+              renewal
+              features
+              eventType
+              eventStartDate
+              eventEndDate
+              venueName
+              eventOnlineUrl
+              eventLocation
+              eventCapacity
+              eventRegisteredCount
+              eventWaitlistEnabled
+              metaTitle
+              metaDescription
+              isVisible 
+              images
+              createdAt
+              updatedAt
+            }
+  
+            sale {
+              id
+              status
+              totalAmount
+              refundDetails
+              paymentDetails
+            }
+          }
+        }
+      }
+    `;
+  
+    const response: Promise<
+      OperationResult<{
+        GetMyTickets: TicketPaginator;
+      }>
+    > = this.query(requestData, { first, page });
+  
+    return response;
+  };
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}

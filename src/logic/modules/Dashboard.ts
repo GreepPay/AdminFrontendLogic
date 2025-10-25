@@ -5,6 +5,9 @@ import {
   BusinessOverview,
   CustomerOverview,
   TransactionOverview,
+  EventOverview ,
+  DasboardP2POverview,
+  VendorOverview,
 } from "../../gql/graphql"
 
 export default class Dashboard extends Common {
@@ -17,6 +20,10 @@ export default class Dashboard extends Common {
   public MerchantOverview: BusinessOverview | undefined = undefined
   public CustomerOverview: CustomerOverview | undefined = undefined
   public TransactionOverview: TransactionOverview | undefined = undefined
+  public EventOverview: EventOverview|undefined = undefined
+  public DasboardP2POverview: DasboardP2POverview|undefined = undefined
+  public VendorOverview:  VendorOverview|undefined = undefined
+  
 
   // Analytics data
   public AnalyticsData: {
@@ -62,6 +69,34 @@ export default class Dashboard extends Common {
     return $api.dashboard.GetTransactionOverview(range).then((response) => {
       this.TransactionOverview = response.data?.GetTransactionOverview
       return this.TransactionOverview
+    })
+  }
+  
+  public GetEventOverview = async (
+    range: string = ""
+  ): Promise<EventOverview | undefined> => {
+    return $api.dashboard.GetEventOverview(range).then((response) => {
+      this.EventOverview = response.data?.GetEventOverview
+      return this.EventOverview
+    })
+  }
+
+  public GetP2POverview = async (
+    range: string = ""
+  ): Promise<DasboardP2POverview | undefined> => {
+    return $api.dashboard.GetP2POverview(range).then((response) => {
+      this.DasboardP2POverview = response.data?.GetP2POverview
+      return this.DasboardP2POverview
+    })
+  }
+  
+  
+  public GetVendorOverview = async (
+    range: string = ""
+  ): Promise<VendorOverview | undefined> => {
+    return $api.dashboard.GetVendorOverview(range).then((response) => {
+      this.VendorOverview = response.data?.GetVendorOverview
+      return this.VendorOverview
     })
   }
 

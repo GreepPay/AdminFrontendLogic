@@ -42,6 +42,124 @@ export type Account = {
   uuid: Scalars['String'];
 };
 
+/** A single Ad */
+export type ExchangeAd = {
+  __typename?: "ExchangeAd"
+  /** Address Details */
+  address_details?: Maybe<Scalars["String"]>
+  /** Business */
+  business?: Maybe<Business>
+  /** Business ID */
+  business_id?: Maybe<Scalars["String"]>
+  /** Ad Created At */
+  created_at: Scalars["DateTime"]
+  /** From Currency */
+  from_currency: Scalars["String"]
+  /** Maximum Amount */
+  max_amount: Scalars["Float"]
+  /** Minimum Amount */
+  min_amount: Scalars["Float"]
+  /** Payout Address */
+  payout_address?: Maybe<Scalars["String"]>
+  /** Payout Banks */
+  payout_banks?: Maybe<Scalars["String"]>
+  /** Exchange Rate */
+  rate: Scalars["Float"]
+  /** Ad Status ('active', 'completed', 'cancelled') */
+  status: Scalars["String"]
+  /** To Currency */
+  to_currency: Scalars["String"]
+  /** Ad Updated At */
+  updated_at: Scalars["DateTime"]
+  /** Unique UUID */
+  uuid: Scalars["String"]
+}
+
+/** Currency Pair used in Exchange Ads */
+export type CurrencyPair = {
+  __typename?: "CurrencyPair"
+  /** Currency being sold (e.g. 'USDT') */
+  from: Scalars["String"]
+  /** Currency being bought (e.g. 'NGN') */
+  to: Scalars["String"]
+}
+
+/** A single Exchange Ad Stats record */
+export type ExchangeAdStats = {
+  __typename?: "ExchangeAdStats"
+  /** Business Name */
+  business_name: Scalars["String"]
+  /** Business Logo URL */
+  business_logo?: Maybe<Scalars["String"]>
+  /** List of currency pairs traded by this business */
+  currencies: Array<CurrencyPair>
+  /** Average Exchange Rate */
+  rate: Scalars["Float"]
+   /** Total Volume Transacted by exchanger */
+   volume:Scalars["Float"]
+  /** Total number of orders */
+  no_of_orders: Scalars["Int"]
+  /** User’s Wallet Balance */
+  user_balance: Scalars["Float"]
+  /** Minimum Trade Amount */
+  min_amount: Scalars["Float"]
+  /** Maximum Trade Amount */
+  max_amount: Scalars["Float"]
+  /** Percentage of Successful Trades */
+  percent_of_successful_trades: Scalars["Float"]
+}
+
+export type ExchangeAdStatsPaginator = {
+  __typename?: "ExchangeAdStatsPaginator"
+  /** A list of ExchangeAdStats items. */
+  data: Array<ExchangeAdStats>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
+
+/** A single Order */
+export type ExchangeOrder = {
+  __typename?: "ExchangeOrder"
+  /** The attached Ad */
+  ad: ExchangeAd
+  /** Ad ID */
+  ad_id: Scalars["Int"]
+  /** Amount */
+  amount: Scalars["Float"]
+  /** Conversation UUID associated with this order */
+  conversation_uuid?: Maybe<Scalars["String"]>
+  /** Order Created At */
+  created_at: Scalars["DateTime"]
+  /** Expected Amount */
+  expected_amount: Scalars["Float"]
+  /** Expiration Time */
+  expired_at: Scalars["DateTime"]
+  /** ID */
+  id: Scalars["Int"]
+  /** Payment Amount */
+  payment_amount: Scalars["String"]
+  /** Payment Type */
+  payment_type: Scalars["String"]
+  /** Payout Option */
+  payout_option: Scalars["String"]
+  /** Pickup Location Address Line */
+  pickup_location_address_line?: Maybe<Scalars["String"]>
+  /** Pickup Location City */
+  pickup_location_city?: Maybe<Scalars["String"]>
+  /** Pickup Location Country */
+  pickup_location_country?: Maybe<Scalars["String"]>
+  /** Order Status ('pending', 'completed', 'cancelled', 'failed') */
+  status: Scalars["String"]
+  /** Order Updated At */
+  updated_at: Scalars["DateTime"]
+  /** The attached User */
+  user: User
+  /** User ID */
+  user_id: Scalars["Int"]
+  /** Unique UUID */
+  uuid: Scalars["String"]
+}
+
 export type AuthResponse = {
   __typename?: 'AuthResponse';
   token: Scalars['String'];
@@ -84,6 +202,34 @@ export type Business = {
   website?: Maybe<Scalars['String']>;
 };
 
+
+/** Event host statistics. */
+export type EventHostStats = {
+  __typename?: 'EventHostStats';
+  id: Scalars['Int'];
+  /** Business name */
+  business_name: Scalars['String'];
+  /** Business logo URL */
+  business_logo?: Maybe<Scalars['String']>;
+  /** Total events created */
+  events_created: Scalars['Int'];
+  /** Total events completed */
+  events_completed: Scalars['Int'];
+  /** Total events cancelled */
+  events_cancelled: Scalars['Int'];
+  /** Total ticket cost across all events */
+  total_ticket_cost: Scalars['Float'];
+  /** Total tickets sold across all events */
+  total_tickets_sold: Scalars['Int'];
+};
+
+export type EventHostStatsPaginator = {
+  __typename?: "EventHostStatsPaginator"
+  /** A list of EventHostStats items. */
+  data: Array<EventHostStats>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
 export type BusinessOverview = {
   __typename?: 'BusinessOverview';
   fee: Scalars['Float'];
@@ -91,6 +237,161 @@ export type BusinessOverview = {
   shopSales: Scalars['Float'];
   withdrawals: Scalars['Float'];
 };
+/** The available columns you can filter CategoryEventStats by */
+export enum QueryGetCategoryEventStatsWhereColumn {
+  Id = "id",
+  Name = "name", 
+  CreatedAt = "created_at",  // Match "created_at" from your directive
+  UpdatedAt = "updated_at",
+  EventLocation = "eventLocation"  // Match "eventLocation" from your directive
+}
+/** Common SQL-style operators supported by Lighthouse */
+export enum QueryWhereOperators {
+  Eq = "EQ",
+  Neq = "NEQ",
+  Gt = "GT",
+  Gte = "GTE",
+  Lt = "LT",
+  Lte = "LTE",
+  Like = "LIKE",
+  Between = "BETWEEN",
+  In = "IN",
+  NotIn = "NOT_IN",
+}
+
+
+export type QueryGetCategoryEventStatsWhereWhereConditions = {
+  /** Combine multiple where conditions with AND logic */
+  AND?: Array<QueryGetCategoryEventStatsWhereWhereConditions>;
+
+  /** Combine multiple where conditions with OR logic */
+  OR?: Array<QueryGetCategoryEventStatsWhereWhereConditions>;
+
+  /** The column (database field) to filter by */
+  column?: QueryGetCategoryEventStatsWhereColumn;
+
+  /** The operator for comparison (=, !=, LIKE, BETWEEN, etc.) */
+  operator?: QueryWhereOperators;
+
+  /** The value to compare against */
+  value?: Scalars["String"];
+};
+
+
+
+export type CategoryEventStat = {
+  __typename?: "CategoryEventStat";
+  categoryId: Scalars["Int"];
+  categoryName: Scalars["String"];
+  eventCount: Scalars["Int"];
+};
+
+export type CategoryEventStats = {
+  __typename?: "CategoryEventStats";
+  data: Array<CategoryEventStat>;
+  totalEvents: Scalars["Int"];
+  mostPopularCategory?: Scalars["String"];
+};
+
+/** A paginated list of Category items. */
+export type CategoryPaginator = {
+  __typename?: 'CategoryPaginator';
+  /** A list of Category items. */
+  data: Array<Category>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+
+/** Allowed column names for Query.GetCategories.orderBy. */
+export enum QueryGetCategoriesOrderByColumn {
+  Name = 'NAME'
+}
+
+/** Allowed column names for Query.GetProducts.orderBy. */
+export enum QueryGetProductsOrderByColumn {
+  CreatedAt = 'CREATED_AT'
+}
+/** Order by clause for Query.GetCategories.orderBy. */
+export type QueryGetCategoriesOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetCategoriesOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Order by clause for Query.GetProducts.orderBy. */
+export type QueryGetProductsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryGetProductsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+// Add the missing types
+export  type EventOverview = {
+  __typename?: 'EventOverview';
+  ongoing_events: Scalars['Int'];
+  events_created: Scalars['Int'];
+  event_hosts: Scalars['Int'];
+  tickets_sold: Scalars['Int'];
+}
+
+export  type DasboardP2POverview = {
+  __typename?: 'P2POverview';
+  active_trades: Scalars['Int'];
+  exchangers: Scalars['Int'];
+  trades_completed: Scalars['Int'];
+  volume: Scalars['Float'];
+}
+
+export type P2pOverviewContent = {
+  __typename?: 'P2pOverviewContent';
+  active_trades: Scalars['Int'];
+  exchangers: Scalars['Int'];
+  trades_completed: Scalars['Int'];
+  volume: Scalars['Float'];
+  average_trade_size: Scalars['Float'];
+  currencies_in_trade: Scalars['Int'];
+  trade_ads: Scalars['Int'];
+  trades: Scalars['Int'];
+  location: Scalars['Int'];
+}
+export type VendorOverview = {
+  __typename?: 'VendorOverview';
+  ongoing_orders: Scalars['Int'];
+  product_sales: Scalars['Int'];
+  product_listed: Scalars['Int'];
+  vendors: Scalars['Int'];
+}
+
+// Add the missing types for Commerce
+export type EventOverviewContent = {
+  __typename?: 'EventOverviewContent';
+  ongoing_events: Scalars['Int'];
+  ongoing_events_attendees: Scalars['Int'];
+  ongoing_events_checkedin: Scalars['Int'];
+  events_created: Scalars['Int'];
+  events_cancelled: Scalars['Int'];
+  upcoming_events: Scalars['Int'];
+  event_hosts: Scalars['Int'];
+  tickets_sold: Scalars['Int'];
+  ticket_sales: Scalars['Int'];
+  ticket_cost: Scalars['Float'];
+  total_volume: Scalars['Float'];
+}
+
+export type VendorOverviewContent = {
+  __typename?: 'VendorOverviewContent';
+  product_sales: Scalars['Int'];
+  product_listed: Scalars['Int'];
+  products_sold: Scalars['Int'];
+  vendors: Scalars['Int'];
+  order_requests: Scalars['Int'];
+  orders_accepted: Scalars['Int'];
+  orders_shipped: Scalars['Int'];
+  orders_completed: Scalars['Int'];
+}
+
 
 export type BusinessProfile = {
   __typename?: 'BusinessProfile';
@@ -129,7 +430,32 @@ export type Customer = {
   student_id?: Maybe<Scalars['String']>;
   /** Profile Updated At */
   updated_at: Scalars['DateTime'];
+
 };
+
+
+
+/** User ticket purchase statistics. */
+export type UserTicketStats = {
+  __typename?: 'UserTicketStats';
+   id: Scalars['Int'];
+  /** User's name */
+  user_name: Scalars['String'];
+  /** User's profile picture URL */
+  profile_picture?: Maybe<Scalars['String']>;
+  /** Total number of unique events user bought tickets for */
+  total_events_bought: Scalars['Int'];
+  /** Total amount spent on all tickets */
+  total_tickets_bought: Scalars['Float'];
+};
+
+export type UserTicketStatsPaginator = {
+  __typename?: "UserTicketStatsPaginator"
+  /** A list of UserTicketStats items. */
+  data: Array<UserTicketStats>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
 
 export type CustomerOverview = {
   __typename?: 'CustomerOverview';
@@ -350,6 +676,229 @@ export type PaginatorInfo = {
   perPage: Scalars['Int'];
   /** Number of total available items. */
   total: Scalars['Int'];
+};
+
+
+/** A ticket */
+export type Ticket = {
+  __typename?: 'Ticket';
+  /** Ticket Created At */
+  createdAt: Scalars['String'];
+  /** Unique ID */
+  id: Scalars['Int'];
+  /** Price */
+  price: Scalars['Float'];
+  /** Product */
+  product: Product;
+  /** QR Code */
+  qrCode?: Maybe<Scalars['String']>;
+  /** Sale */
+  sale: Sale;
+  /** Sale ID */
+  saleId?: Maybe<Scalars['Int']>;
+  /** Status */
+  status: Scalars['String'];
+  /** Ticket Type */
+  ticketType: Scalars['String'];
+  /** Ticket Updated At */
+  updatedAt: Scalars['String'];
+  /** User ID */
+  userId: Scalars['Int'];
+  /** UUID */
+  uuid: Scalars['String'];
+  /** Variant ID */
+  variantId?: Maybe<Scalars['String']>;
+};
+
+
+/** A sale */
+export type Sale = {
+  __typename?: 'Sale';
+  /** Applied Discounts */
+  appliedDiscounts?: Maybe<Scalars['String']>;
+  /** Sale Created At */
+  createdAt: Scalars['String'];
+  /** Currency */
+  currency: Scalars['String'];
+  /** Customer ID */
+  customerId: Scalars['Int'];
+  /** Discount Amount */
+  discountAmount: Scalars['Float'];
+  /** Unique ID */
+  id: Scalars['Int'];
+  /** Items */
+  items: Scalars['String'];
+  /** Metadata */
+  metadata?: Maybe<Scalars['String']>;
+  /** Payment Details */
+  paymentDetails: Scalars['String'];
+  /** Refund Details */
+  refundDetails?: Maybe<Scalars['String']>;
+  /** Status */
+  status: Scalars['String'];
+  /** Subtotal Amount */
+  subtotalAmount: Scalars['Float'];
+  /** Tax Amount */
+  taxAmount: Scalars['Float'];
+  /** Tax Details */
+  taxDetails?: Maybe<Scalars['String']>;
+  /** Total Amount */
+  totalAmount: Scalars['Float'];
+  /** Transaction ID */
+  transactionId: Scalars['String'];
+  /** Sale Updated At */
+  updatedAt: Scalars['String'];
+  /** The attached user */
+  user: User;
+  /** UUID */
+  uuid: Scalars['String'];
+};
+
+
+
+/** A paginated list of Ticket items. */
+export type TicketPaginator = {
+  __typename?: 'TicketPaginator';
+  /** A list of Ticket items. */
+  data: Array<Ticket>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
+/** A product */
+export type Product = {
+  __typename?: 'Product';
+  /** Billing Interval */
+  billingInterval?: Maybe<Scalars['String']>;
+  /** Attached business */
+  business: Business;
+  /** Business ID */
+  businessId: Scalars['Int'];
+  /** Product Created At */
+  createdAt: Scalars['String'];
+  /** Currency */
+  currency: Scalars['String'];
+  /** Description */
+  description: Scalars['String'];
+  /** Dimensions */
+  dimensions?: Maybe<Scalars['String']>;
+  /** Download Limit */
+  downloadLimit?: Maybe<Scalars['Int']>;
+  /** Download URL */
+  downloadUrl?: Maybe<Scalars['String']>;
+  /** Event Capacity */
+  eventCapacity?: Maybe<Scalars['Int']>;
+  /** Event End Date */
+  eventEndDate?: Maybe<Scalars['String']>;
+  /** Event Location */
+  eventLocation?: Maybe<Scalars['String']>;
+  /** Event Online URL */
+  eventOnlineUrl?: Maybe<Scalars['String']>;
+  /** Event Registered Count */
+  eventRegisteredCount: Scalars['Int'];
+  /** Event Start Date */
+  eventStartDate?: Maybe<Scalars['String']>;
+  /** Event Type */
+  eventType?: Maybe<Scalars['String']>;
+  /** Event Waitlist Enabled */
+  eventWaitlistEnabled: Scalars['Boolean'];
+  /** Features */
+  features?: Maybe<Scalars['String']>;
+  /** FileInfo */
+  fileInfo?: Maybe<Scalars['String']>;
+  /** Grace Period */
+  gracePeriod?: Maybe<Scalars['Int']>;
+  /** Unique ID */
+  id: Scalars['Int'];
+  /** Images */
+  images: Scalars['String'];
+  /** Inventory Count */
+  inventoryCount?: Maybe<Scalars['Int']>;
+  /** Is Backorder Allowed */
+  isBackorderAllowed: Scalars['Boolean'];
+  /** Is Visible */
+  isVisible: Scalars['Boolean'];
+  /** License */
+  license?: Maybe<Scalars['String']>;
+  /** Meta Description */
+  metaDescription?: Maybe<Scalars['String']>;
+  /** Meta Title */
+  metaTitle?: Maybe<Scalars['String']>;
+  /** Product Name */
+  name: Scalars['String'];
+  /** Price */
+  price: Scalars['Float'];
+  /** Renewal */
+  renewal?: Maybe<Scalars['String']>;
+  /** SKU */
+  sku: Scalars['String'];
+  /** Product Slug */
+  slug: Scalars['String'];
+  /** Status */
+  status: Scalars['String'];
+  /** Stock Threshold */
+  stockThreshold?: Maybe<Scalars['Int']>;
+  /** Tax Code */
+  taxCode?: Maybe<Scalars['String']>;
+  /** Trial Period Days */
+  trialPeriodDays?: Maybe<Scalars['Int']>;
+  /** Type */
+  type: Scalars['String'];
+  /** Product Updated At */
+  updatedAt: Scalars['String'];
+  /** UUID */
+  uuid: Scalars['String'];
+  /** Variants */
+  variants: Scalars['String'];
+  /** Venue Name */
+  venueName?: Maybe<Scalars['String']>;
+  /** Weight */
+  weight?: Maybe<Scalars['Float']>;
+};
+
+export enum ProductType {
+  Digital = 'digital',
+  Event = 'event',
+  Physical = 'physical',
+  Subscription = 'subscription'
+}
+
+export type ProductVariant = {
+  __typename?: 'ProductVariant';
+  attributes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id: Scalars['ID'];
+  inventory?: Maybe<Scalars['Int']>;
+  priceAdjustment: Scalars['Float'];
+  sku: Scalars['String'];
+};
+
+
+/** A category */
+export type Category = {
+  __typename?: 'Category';
+  /** Category Created At */
+  createdAt: Scalars['String'];
+  /** Unique ID */
+  id: Scalars['Int'];
+  /** Category Name */
+  name: Scalars['String'];
+  /** Products */
+  products: Array<Product>;
+  /** Category Slug */
+  slug: Scalars['String'];
+  /** Category Updated At */
+  updatedAt: Scalars['String'];
+  /** UUID */
+  uuid: Scalars['String'];
+};
+
+/** A paginated list of Product items. */
+export type ProductPaginator = {
+  __typename?: 'ProductPaginator';
+  /** A list of Product items. */
+  data: Array<Product>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
 };
 
 /** A single point transaction */
