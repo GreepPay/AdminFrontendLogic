@@ -5,6 +5,7 @@ import {
   QueryWhereOperators,
   VendorOverviewContent,
   CategoryEventStats,
+  AllEventContentPaginator,
  
 } from "../../gql/graphql";
 import { $api } from "../../services";
@@ -16,9 +17,11 @@ export default class Commerce extends Common {
     // Base Variables
     public   VendorOverviewContent:   VendorOverviewContent| undefined;
     public CategoryEventStats: CategoryEventStats | undefined;
+    public AllEventContentPaginator:AllEventContentPaginator|undefined;
   constructor() {
     super();
     this.defineReactiveProperty("VendorOverviewContent", undefined);
+    this.defineReactiveProperty("AllEventContentPaginator", undefined);
   }
   
   public GetVendorOverview = async(range: string)=>{
@@ -29,6 +32,17 @@ export default class Commerce extends Common {
     }); 
       
     }  
+    
+    
+    public GetAllEventContent = async (
+      first: number = 10,
+      page: number = 1
+    ): Promise<AllEventContentPaginator | undefined> => {
+      return $api.commerce.GetAllEventContent(first, page).then((response) => {
+        this.AllEventContentPaginator = response.data?.GetAllEventContent;
+        return this.AllEventContentPaginator;
+      });
+    }
   
     
     public GetCategoryEventStats = async (

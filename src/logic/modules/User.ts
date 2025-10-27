@@ -16,6 +16,10 @@ import {
 export default class User extends Common {
   constructor() {
     super()
+      this.defineReactiveProperty("ExchangeAdStatsPaginator", undefined);
+      this.defineReactiveProperty("UserTicketStatsPaginator", undefined);
+      this.defineReactiveProperty("EventHostStatsPaginator", undefined);
+      this.defineReactiveProperty("MerchantProfilePaginator", undefined);
   }
 
   // Base Variables

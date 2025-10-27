@@ -7,6 +7,7 @@ import {
   VendorOverviewContent,
  EventOverviewContent,
  CategoryPaginator,
+ AllEventContentPaginator,
  
 } from "../gql/graphql"
 export default class CommerceApi extends BaseApiService {
@@ -108,5 +109,47 @@ export default class CommerceApi extends BaseApiService {
   
     return response;
   };
+  
+  
+  public GetAllEventContent = (first: number, page: number) => {
+   
+    const requestData = `
+     
+     query GetAllEventContent($first: Int, $page: Int) {
+       GetAllEventContent(first: $first, page: $page) {
+         paginatorInfo {
+           total
+           perPage
+           lastPage
+           lastItem
+           hasMorePages
+           firstItem
+           currentPage
+           count
+         }
+         data {
+           id 
+           ticket_revenue
+           ticket_price
+           status
+           no_of_tickets_sold
+           location
+           image_url
+           event_title
+           eventStartDate
+           eventOnlineUrl
+           eventEndDate
+         }
+       }
+     }      
+     `
+   
+    const response: Promise<
+      OperationResult<{ GetAllEventContent: AllEventContentPaginator }>
+    > = this.query(requestData, { first, page }) 
+   
+    return response
+  }
+  
   
 }

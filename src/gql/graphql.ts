@@ -84,6 +84,41 @@ export type CurrencyPair = {
   to: Scalars["String"]
 }
 
+
+/** A single Event Content record */
+export type AllEventContent = {
+  __typename?: "AllEventContent"
+  id: Scalars["Int"]
+  /** Event Location */
+  location?: Maybe<Scalars["String"]>
+  /** Event Image URL */
+  image_url?: Maybe<Scalars["String"]>
+  /** Event Title */
+  event_title?: Maybe<Scalars["String"]>
+  /** Event Status */
+  status?: Maybe<Scalars["String"]>
+  /** Event Online URL */
+  eventOnlineUrl?: Maybe<Scalars["String"]>
+  /** Ticket Price */
+  ticket_price: Scalars["Float"]
+  /** Number of Tickets Sold */
+  no_of_tickets_sold?: Maybe<Scalars["Int"]>
+  /** Ticket Revenue */
+  ticket_revenue: Scalars["Float"]
+  /** Event Start Date */
+  eventStartDate?: Maybe<Scalars["String"]>
+  /** Event End Date */
+  eventEndDate?: Maybe<Scalars["String"]>
+}
+
+/** A paginated list of AllEventContent items. */
+export type AllEventContentPaginator = {
+  __typename?: "AllEventContentPaginator"
+  /** A list of AllEventContent items. */
+  data: Array<AllEventContent>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
 /** A single Exchange Ad Stats record */
 export type ExchangeAdStats = {
   __typename?: "ExchangeAdStats"
