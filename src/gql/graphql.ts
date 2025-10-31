@@ -85,6 +85,68 @@ export type CurrencyPair = {
 }
 
 
+/** A single Vendor Order Statistics record */
+export type VendorOrderStats = {
+  __typename?: "VendorOrderStats"
+  id: Scalars["Int"]
+  /** Product Title */
+  product_title: Scalars["String"]
+  /** Total Cost Ordered */
+  Total_cost_ordered: Scalars["Float"]
+  /** Date and Time of Order */
+  Date_Time: Scalars["String"]
+  /** Number of Items */
+  number_of_items: Scalars["String"]
+  /** Currency */
+  currency: Scalars["String"]
+  order_status: Scalars["String"]
+  customer: Scalars["String"]
+}
+
+/** A paginated list of Vendor Order Statistics items. */
+export type VendorOrderStatsPaginator = {
+  __typename?: "VendorOrderStatsPaginator"
+  /** A list of VendorOrderStats items. */
+  data: Array<VendorOrderStats>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
+
+
+/** A single Vendor Product Statistics record */
+export type VendorProductStats = {
+  __typename?: "VendorProductStats"
+  id: Scalars["Int"]
+  /** Product Title */
+  product_title: Scalars["String"]
+  /** Product Image URL */
+  product_image: Scalars["String"]
+  /** Product Type */
+  product_type: Scalars["String"]
+  /** Product Price */
+  product_price: Scalars["Float"]
+  /** Product Variants */
+  variants: Scalars["String"]
+  /** Product Category */
+  product_category: Scalars["String"]
+  /** Products Left in Stock */
+  product_left: Scalars["Int"]
+  /** Currency */
+  currency: Scalars["String"]
+  /** Number of Items Sold */
+  number_sold: Scalars["String"]
+}
+
+/** A paginated list of Vendor Product Statistics items. */
+export type VendorProductStatsPaginator = {
+  __typename?: "VendorProductStatsPaginator"
+  /** A list of VendorProductStats items. */
+  data: Array<VendorProductStats>
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo
+}
+
+
 /** A single Event Content record */
 export type AllEventContent = {
   __typename?: "AllEventContent"
@@ -425,6 +487,7 @@ export type VendorOverviewContent = {
   orders_accepted: Scalars['Int'];
   orders_shipped: Scalars['Int'];
   orders_completed: Scalars['Int'];
+  orders_refunded: Scalars['Int'];
 }
 
 

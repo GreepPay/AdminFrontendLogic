@@ -8,6 +8,9 @@ import {
   ProfilePaginator,
   Customer,
   Business,
+  VendorOverviewContent,
+  VendorOrderStatsPaginator,
+  VendorProductStatsPaginator,
   EventHostStatsPaginator,
   UserTicketStatsPaginator,
   ExchangeAdStatsPaginator,
@@ -20,6 +23,9 @@ export default class User extends Common {
       this.defineReactiveProperty("UserTicketStatsPaginator", undefined);
       this.defineReactiveProperty("EventHostStatsPaginator", undefined);
       this.defineReactiveProperty("MerchantProfilePaginator", undefined);
+      this.defineReactiveProperty("VendorProductStatsPaginator", undefined);
+      this.defineReactiveProperty("VendorOrderStatsPaginator", undefined);
+      this.defineReactiveProperty("VendorOverviewContent", undefined);
   }
 
   // Base Variables
@@ -29,6 +35,9 @@ export default class User extends Common {
   public EventHostStatsPaginator: EventHostStatsPaginator | undefined
   public UserTicketStatsPaginator: UserTicketStatsPaginator | undefined
   public ExchangeAdStatsPaginator:ExchangeAdStatsPaginator | undefined
+  public VendorOverviewContent: VendorOverviewContent | undefined
+  public VendorOrderStatsPaginator: VendorOrderStatsPaginator | undefined
+  public VendorProductStatsPaginator: VendorProductStatsPaginator | undefined
   public MerchantProfilePaginator: ProfilePaginator | undefined
   public UpdateRoleResult?: boolean
 
@@ -65,6 +74,37 @@ export default class User extends Common {
     })
   }
 
+  
+  public GetVendorProductStats = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<any | undefined> => {
+    return $api.user.GetVendorProductStats(first, page).then((response) => {
+      this.VendorProductStatsPaginator = response.data?.GetVendorProductStats
+      return this.VendorProductStatsPaginator
+    })
+  }
+
+  public GetVendorOrderStats = async (
+    first: number = 10,
+    page: number = 1
+  ): Promise<any | undefined> => {
+    return $api.user.GetVendorOrderStats(first, page).then((response) => {
+      this.VendorOrderStatsPaginator = response.data?.GetVendorOrderStats
+      return this.VendorOrderStatsPaginator
+    })
+  }
+
+  public GetVendorOverviewContent = async (
+    range: string
+  ): Promise<any | undefined> => {
+    return $api.user.GetVendorOverviewContent(range).then((response) => {
+      this.VendorOverviewContent = response.data?.GetVendorOverviewContent
+      return this.VendorOverviewContent
+    })
+  }
+  
+  
   public GetEventAttendees = async (
     first: number = 10,
     page: number = 1

@@ -7,6 +7,9 @@ import { MutationUpdateUserRoleArgs,
         EventHostStatsPaginator,
         UserTicketStatsPaginator,
         ExchangeAdStatsPaginator,
+        VendorOverviewContent,
+        VendorOrderStatsPaginator,
+        VendorProductStatsPaginator,
 } from "src/gql/graphql"
 
 export default class UserApi extends BaseApiService {
@@ -451,6 +454,99 @@ export default class UserApi extends BaseApiService {
     return response
   }
  
+  public GetVendorProductStats = (first: number, page: number) => {
+    const requestData = `
+      query GetVendorProductStats($first: Int!, $page: Int!) {
+        GetVendorProductStats(first: $first, page: $page) {
+          paginatorInfo {
+            total
+            perPage
+            lastPage
+            lastItem
+            hasMorePages
+            firstItem
+            currentPage
+            count
+          }
+          data {
+            product_type
+            product_title
+            product_price
+            currency
+            product_left
+            product_category
+            product_image
+            number_sold
+            id
+            Variants
+          }
+        }
+      }
+    `
+    const response: Promise<
+      OperationResult<{ GetVendorProductStats: VendorProductStatsPaginator }>
+    > = this.query(requestData, { first, page })
+
+    return response
+  }
+
+  public GetVendorOrderStats = (first: number, page: number) => {
+    const requestData = `
+      query GetVendorOrderStats($first: Int!, $page: Int!) {
+        GetVendorOrderStats(first: $first, page: $page) {
+          paginatorInfo {
+            total
+            perPage
+            lastPage
+            lastItem
+            hasMorePages
+            firstItem
+            currentPage
+            count
+          }
+          data {
+            product_title
+            number_of_items
+            id
+            total_cost_ordered
+            order_status
+            currency
+            customer
+            date_time
+          }
+        }
+      }
+    `
+    const response: Promise<
+      OperationResult<{ GetVendorOrderStats: VendorOrderStatsPaginator }>
+    > = this.query(requestData, { first, page })
+
+    return response
+  }
+
+  public GetVendorOverviewContent = (range: string) => {
+    const requestData = `
+      query GetVendorOverviewContent($range: String!) {
+        GetVendorOverviewContent(range: $range) {
+          vendors
+          products_sold
+          products_listed
+          product_sales
+          orders_shipped
+          orders_refunded
+          orders_completed
+          orders_accepted
+          order_requests
+        }
+      }
+    `
+    const response: Promise<
+      OperationResult<{ GetVendorOverviewContent: VendorOverviewContent }>
+    > = this.query(requestData, { range })
+
+    return response
+  }
+
   
 
 }
