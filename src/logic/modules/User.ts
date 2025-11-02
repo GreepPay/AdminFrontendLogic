@@ -88,7 +88,7 @@ export default class User extends Common {
   public GetVendorOrderStats = async (
     first: number = 10,
     page: number = 1
-  ): Promise<any | undefined> => {
+  ): Promise<any  | undefined> => {
     return $api.user.GetVendorOrderStats(first, page).then((response) => {
       this.VendorOrderStatsPaginator = response.data?.GetVendorOrderStats
       return this.VendorOrderStatsPaginator

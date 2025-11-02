@@ -84,23 +84,39 @@ export type CurrencyPair = {
   to: Scalars["String"]
 }
 
+/** A single Order Product item */
+export type OrderProduct = {
+  __typename?: "OrderProduct"
+  /** Product ID */
+  product_id: Scalars["Int"]
+  /** Product Title */
+  product_title: Scalars["String"]
+  /** Product Image URL */
+  product_image?: Maybe<Scalars["String"]>
+  /** Quantity of Product */
+  quantity: Scalars["String"]
+  /** Unit Price of Product */
+  unit_price: Scalars["Float"]
+  /** Total Price of Product */
+  total_price: Scalars["Float"]
+}
 
 /** A single Vendor Order Statistics record */
 export type VendorOrderStats = {
   __typename?: "VendorOrderStats"
   id: Scalars["Int"]
-  /** Product Title */
-  product_title: Scalars["String"]
+  /** Products in the order */
+  products: Array<OrderProduct>
   /** Total Cost Ordered */
-  Total_cost_ordered: Scalars["Float"]
+  total_cost_ordered: Scalars["Float"]
   /** Date and Time of Order */
-  Date_Time: Scalars["String"]
-  /** Number of Items */
-  number_of_items: Scalars["String"]
+  date_time: Scalars["String"]
   /** Currency */
   currency: Scalars["String"]
   order_status: Scalars["String"]
   customer: Scalars["String"]
+  /** Number of Items */
+  number_of_items: Scalars["String"]
 }
 
 /** A paginated list of Vendor Order Statistics items. */

@@ -492,7 +492,7 @@ export default class UserApi extends BaseApiService {
 
   public GetVendorOrderStats = (first: number, page: number) => {
     const requestData = `
-      query GetVendorOrderStats($first: Int!, $page: Int!) {
+      query GetVendorOrderStats($first: Int, $page: Int) {
         GetVendorOrderStats(first: $first, page: $page) {
           paginatorInfo {
             total
@@ -505,14 +505,21 @@ export default class UserApi extends BaseApiService {
             count
           }
           data {
-            product_title
+            total_cost_ordered
+            products {
+              unit_price
+              total_price
+              quantity
+              product_title
+              product_image
+              product_id
+            }
+            order_status
             number_of_items
             id
-            total_cost_ordered
-            order_status
-            currency
-            customer
             date_time
+            customer
+            currency
           }
         }
       }
