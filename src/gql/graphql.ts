@@ -322,6 +322,8 @@ export type EventHostStats = {
   id: Scalars['Int'];
   /** Business name */
   business_name: Scalars['String'];
+  /** Business name */
+  owner_name: Scalars['String'];
   /** Business logo URL */
   business_logo?: Maybe<Scalars['String']>;
   /** Total events created */

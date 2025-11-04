@@ -354,7 +354,6 @@ export default class UserApi extends BaseApiService {
       query GetEventHosts($first: Int!, $page: Int) {
         GetEventHosts(first: $first, page: $page) {
           paginatorInfo {
-            count
             total
             perPage
             lastPage
@@ -365,9 +364,10 @@ export default class UserApi extends BaseApiService {
             count
           }
           data {
-            id
             total_tickets_sold
             total_ticket_cost
+            owner_name
+            id
             events_created
             events_completed
             events_cancelled
