@@ -171,6 +171,8 @@ export type AllEventContent = {
   location?: Maybe<Scalars["String"]>
   /** Event Image URL */
   image_url?: Maybe<Scalars["String"]>
+  /** Currency */
+  currency?: Maybe<Scalars["String"]>
   /** Event Title */
   event_title?: Maybe<Scalars["String"]>
   /** Event Status */
@@ -324,6 +326,8 @@ export type EventHostStats = {
   business_name: Scalars['String'];
   /** Business name */
   owner_name: Scalars['String'];
+  /** currency */
+  currency: Scalars['String'];
   /** Business logo URL */
   business_logo?: Maybe<Scalars['String']>;
   /** Total events created */
@@ -333,9 +337,9 @@ export type EventHostStats = {
   /** Total events cancelled */
   events_cancelled: Scalars['Int'];
   /** Total ticket cost across all events */
-  total_ticket_cost: Scalars['Float'];
+  total_tickets_sold: Scalars['Float'];
   /** Total tickets sold across all events */
-  total_tickets_sold: Scalars['Int'];
+  average_ticket_cost: Scalars['Int'];
 };
 
 export type EventHostStatsPaginator = {

@@ -259,15 +259,6 @@ export default class UserApi extends BaseApiService {
           updated_at
           country
           city
-          getEventHostsWithStats {
-            business_name
-            business_logo
-            events_created
-            events_completed
-            events_cancelled
-            total_ticket_cost
-            total_tickets_sold
-          }
         }
       }
     }
@@ -365,10 +356,11 @@ export default class UserApi extends BaseApiService {
           }
           data {
             total_tickets_sold
-            total_ticket_cost
+            average_ticket_cost
             owner_name
             id
             events_created
+            currency
             events_completed
             events_cancelled
             business_name
