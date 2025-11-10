@@ -339,7 +339,7 @@ export type EventHostStats = {
   /** Total ticket cost across all events */
   total_tickets_sold: Scalars['Float'];
   /** Total tickets sold across all events */
-  average_ticket_cost: Scalars['Int'];
+  average_ticket_cost: Scalars['Float'];
 };
 
 export type EventHostStatsPaginator = {
