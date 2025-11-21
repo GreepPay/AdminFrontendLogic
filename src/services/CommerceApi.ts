@@ -111,12 +111,16 @@ export default class CommerceApi extends BaseApiService {
   };
   
   
-  public GetAllEventContent = (first: number, page: number) => {
+  public GetAllEventContent = (orderType = "CREATED_AT",
+  order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
    
     const requestData = `
      
      query GetAllEventContent($first: Int, $page: Int) {
-       GetAllEventContent(first: $first, page: $page) {
+       GetAllEventContent(first: $first, page: $page, orderBy: {
+             column: ${orderType ? orderType : "CREATED_AT"},
+             order: ${order}
+           }) {
          paginatorInfo {
            total
            perPage

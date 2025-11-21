@@ -48,10 +48,13 @@ export default class TransactionApi extends BaseApiService {
   }
 
   // Queries
-  public GetWithdrawals = (first: number, page: number) => {
+  public GetWithdrawals = ( orderType = "CREATED_AT", order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
     query GetWithdrawals($first: Int!, $page: Int!) {
-      GetWithdrawals(first: $first, page: $page) {
+      GetWithdrawals(first: $first, page: $page,  orderBy: {
+            column: ${orderType ? orderType : "CREATED_AT"},
+            order: ${order}
+          } ) {
         paginatorInfo {
           firstItem
           lastItem
@@ -176,14 +179,13 @@ export default class TransactionApi extends BaseApiService {
   // $orderBy: [QueryGetTransactionsOrderByOrderByClause]
   // $where: QueryGetTransactionsWhereWhereConditions
   // $whereUser: QueryGetTransactionsWhereUserWhereHasConditions
-  // orderBy: $orderBy
   // where: $where
   // whereUser: $whereUser
   public GetTransactions = (
     first: number,
     page: number,
     whereUser?: any,
-    orderBy?: any[],
+    orderType = "CREATED_AT", order: "ASC" | "DESC" = "DESC",
     where?: any
   ) => {
     const requestData = `
@@ -205,6 +207,10 @@ export default class TransactionApi extends BaseApiService {
       `
             : ""
         }
+        orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }  
       ) {
         paginatorInfo {
           firstItem
@@ -248,7 +254,7 @@ export default class TransactionApi extends BaseApiService {
       OperationResult<{
         GetTransactions: TransactionPaginator
       }>
-    > = this.query(requestData, { first, page, whereUser, orderBy, where })
+    > = this.query(requestData, { first, page, whereUser, where })
  
     return response
   }

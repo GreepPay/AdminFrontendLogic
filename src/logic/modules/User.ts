@@ -56,9 +56,11 @@ export default class User extends Common {
 
   public GetCustomerProfiles = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.user.GetCustomerProfiles(first, page).then((response) => {
+    return $api.user.GetCustomerProfiles(orderType, order,first, page).then((response) => {
       this.CustomerProfilePaginator = response.data?.GetProfiles
       return this.CustomerProfilePaginator
     })
@@ -66,9 +68,11 @@ export default class User extends Common {
   
   public GetEventHostStats = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.user.GetEventHosts(first, page).then((response) => {
+    return $api.user.GetEventHosts(orderType, order,first, page,).then((response) => {
       this.EventHostStatsPaginator = response.data?.GetEventHosts 
       return this.EventHostStatsPaginator
     })
@@ -77,9 +81,11 @@ export default class User extends Common {
   
   public GetVendorProductStats = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.user.GetVendorProductStats(first, page).then((response) => {
+    return $api.user.GetVendorProductStats(orderType, order,first, page).then((response) => {
       this.VendorProductStatsPaginator = response.data?.GetVendorProductStats
       return this.VendorProductStatsPaginator
     })
@@ -87,9 +93,11 @@ export default class User extends Common {
 
   public GetVendorOrderStats = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any  | undefined> => {
-    return $api.user.GetVendorOrderStats(first, page).then((response) => {
+    return $api.user.GetVendorOrderStats(orderType, order,first, page).then((response) => {
       this.VendorOrderStatsPaginator = response.data?.GetVendorOrderStats
       return this.VendorOrderStatsPaginator
     })
@@ -107,9 +115,11 @@ export default class User extends Common {
   
   public GetEventAttendees = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.user.GetEventAttendees(first, page).then((response) => {
+    return $api.user.GetEventAttendees(orderType,order,first, page).then((response) => {
       this.UserTicketStatsPaginator = response.data?.GetEventAttendees
       return this.UserTicketStatsPaginator
     })
@@ -119,9 +129,11 @@ export default class User extends Common {
   
   public GetExchangeAds = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.user.GetExchangeAds(first, page).then((response) => {
+    return $api.user.GetExchangeAds(first, orderType,order,page,).then((response) => {
       this.ExchangeAdStatsPaginator = response.data?.GetExchangeAds
       return this.ExchangeAdStatsPaginator
     })
@@ -129,20 +141,24 @@ export default class User extends Common {
   
   
   public GetMerchantProfiles = async (
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
     first: number = 10,
     page: number = 1
   ): Promise<any | undefined> => {
-    return $api.user.GetMerchantProfiles(first, page).then((response) => {
+    return $api.user.GetMerchantProfiles(orderType,order,first, page).then((response) => {
       this.MerchantProfilePaginator = response.data?.GetProfiles
       return this.MerchantProfilePaginator
     })
   }
 
   public GetAdminProfiles = async (
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
     first: number = 10,
     page: number = 1
   ): Promise<any | undefined> => {
-    return $api.user.GetAdminProfiles(first, page).then((response) => {
+    return $api.user.GetAdminProfiles(orderType,order,first, page).then((response) => {
       this.AdminProfilePaginator = response.data?.GetProfiles
       return this.AdminProfilePaginator
     })

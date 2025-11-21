@@ -34,10 +34,14 @@ export default class VerificationApi extends BaseApiService {
   }
 
   // Queries
-  public GetVerificationRequests = (first: number, page: number) => {
+  public GetVerificationRequests = (orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
     query GetVerificationRequests($first: Int!, $page: Int!) {
-        GetVerificationRequests(first: $first, page: $page) {
+        GetVerificationRequests(first: $first, page: $page,orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             firstItem
             lastItem

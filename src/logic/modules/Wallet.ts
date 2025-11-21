@@ -33,9 +33,11 @@ export default class Wallet extends Common {
   // Queries
   public GetWallets = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<any | undefined> => {
-    return $api.wallet.GetWallets(first, page).then((response) => {
+    return $api.wallet.GetWallets(orderType,order,first, page).then((response) => {
       this.WalletPaginator = response.data?.GetWallets
       return this.WalletPaginator
     })

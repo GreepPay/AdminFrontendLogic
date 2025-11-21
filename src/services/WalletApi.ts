@@ -11,10 +11,14 @@ import {
 
 export default class WalletApi extends BaseApiService {
   // Query
-  public GetWallets = (first: number, page: number) => {
+  public GetWallets = (orderType = "CREATED_AT",
+  order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
      query GetWallets ($first: Int!, $page: Int!)   {
-      GetWallets ( first: $first,    page: $page  ) {
+      GetWallets ( first: $first,  page: $page,  orderBy: {
+            column: ${orderType ? orderType : "CREATED_AT"},
+            order: ${order}
+          } ) {
         paginatorInfo {
           firstItem
             lastItem
@@ -99,7 +103,10 @@ export default class WalletApi extends BaseApiService {
   ) => {
     const requestData = `
       query GetP2pOrders($first: Int!, $page: Int!) {
-        GetP2pOrders(first: $first, page: $page) {
+        GetP2pOrders( first: $first, page: $page, orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           data {
             id
             uuid

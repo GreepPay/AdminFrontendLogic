@@ -36,9 +36,11 @@ export default class Commerce extends Common {
     
     public GetAllEventContent = async (
       first: number = 10,
-      page: number = 1
+      page: number = 1,
+      orderType = "CREATED_AT",
+      order = "DESC" as "DESC" | "ASC",
     ): Promise<AllEventContentPaginator | undefined> => {
-      return $api.commerce.GetAllEventContent(first, page).then((response) => {
+      return $api.commerce.GetAllEventContent(orderType,order,first, page).then((response) => {
         this.AllEventContentPaginator = response.data?.GetAllEventContent;
         return this.AllEventContentPaginator;
       });

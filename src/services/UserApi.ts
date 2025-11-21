@@ -79,12 +79,17 @@ export default class UserApi extends BaseApiService {
 
   // Queries
   //
-  public GetCustomerProfiles = (first: number, page: number) => {
+  public GetCustomerProfiles = (orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
    query GetProfiles ($first: Int!, $page: Int!)  {
       GetProfiles (
         first: $first,
-        page: $page  
+        page: $page,
+        orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }  
         where: {
           column: USER_TYPE
           operator: EQ
@@ -125,9 +130,13 @@ export default class UserApi extends BaseApiService {
   }
 
   //
-  public GetMerchantProfiles = (first: number, page: number) => {
+  public GetMerchantProfiles = (orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
-   query GetProfiles  ($first: Int!, $page: Int!)  {
+   query GetProfiles  ($first: Int!, $page: Int!, orderBy: {
+         column: ${orderType ? orderType : "CREATED_AT"},
+         order: ${order}
+       })  {
   GetProfiles(
       first: $first,
     page: $page,  
@@ -172,12 +181,17 @@ export default class UserApi extends BaseApiService {
   }
 
   //
-  public GetAdminProfiles = (first: number, page: number) => {
+  public GetAdminProfiles = (orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
   query GetProfiles  ($first: Int!, $page: Int!)  {
   GetProfiles(
       first: $first,
-      page: $page  
+      page: $page,
+      orderBy: {
+            column: ${orderType ? orderType : "CREATED_AT"},
+            order: ${order}
+          }  
       whereUserRole: {
       column: NAME
       operator: IN
@@ -340,10 +354,14 @@ export default class UserApi extends BaseApiService {
   }
   
   
-  public GetEventHosts = (first: number, page: number) => {
+  public GetEventHosts = (orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
       query GetEventHosts($first: Int!, $page: Int) {
-        GetEventHosts(first: $first, page: $page) {
+        GetEventHosts(first: $first, page: $page, orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             total
             perPage
@@ -376,16 +394,20 @@ export default class UserApi extends BaseApiService {
     return response
   }
   
-  public GetEventAttendees = (first: number, page: number) => {
+  public GetEventAttendees = ( orderType = "CREATED_AT",
+    order: "ASC" | "DESC" = "DESC", first: number, page: number) => {
     const requestData = `
       query GetEventAttendees($first: Int, $page: Int) {
-        GetEventAttendees(first: $first, page: $page) {
+        GetEventAttendees(first: $first, page: $page, orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             count
             total
             perPage
             lastPage
-            lastItem
+            lastIteFm
             hasMorePages
             firstItem
             currentPage
@@ -407,10 +429,15 @@ export default class UserApi extends BaseApiService {
     return response
   }
 
-  public GetExchangeAds = (first: number, page: number) => {
+  public GetExchangeAds = (first: number, 
+  orderType = "CREATED_AT",
+  order: "ASC" | "DESC" = "DESC", page: number) => {
     const requestData = `
       query GetExchangeAds($first: Int, $page: Int) {
-        GetExchangeAds(first: $first, page: $page) {
+        GetExchangeAds(first: $first, page: $page, orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             count
             total
@@ -441,15 +468,19 @@ export default class UserApi extends BaseApiService {
     `
     const response: Promise<
       OperationResult<{ GetExchangeAds: ExchangeAdStatsPaginator }>
-    > = this.query(requestData, { first, page })
+    > = this.query(requestData, {first, page })
   
     return response
   }
  
-  public GetVendorProductStats = (first: number, page: number) => {
+  public GetVendorProductStats = ( orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
       query GetVendorProductStats($first: Int!, $page: Int!) {
-        GetVendorProductStats(first: $first, page: $page) {
+        GetVendorProductStats(first: $first, page: $page,orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             total
             perPage
@@ -482,10 +513,14 @@ export default class UserApi extends BaseApiService {
     return response
   }
 
-  public GetVendorOrderStats = (first: number, page: number) => {
+  public GetVendorOrderStats = ( orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     const requestData = `
       query GetVendorOrderStats($first: Int, $page: Int) {
-        GetVendorOrderStats(first: $first, page: $page) {
+        GetVendorOrderStats(first: $first, page: $page, orderBy: {
+              column: ${orderType ? orderType : "CREATED_AT"},
+              order: ${order}
+            }) {
           paginatorInfo {
             total
             perPage
