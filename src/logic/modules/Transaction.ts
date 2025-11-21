@@ -25,9 +25,11 @@ export default class TransactionModule extends Common {
   // Queries
   public GetWithdrawals = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<TransactionPaginator | undefined> => {
-    return $api.transaction.GetWithdrawals(first, page).then((response) => {
+    return $api.transaction.GetWithdrawals( orderType,order,first, page,).then((response) => {
       this.WithdrawalsPaginator = response.data?.GetWithdrawals
       return this.WithdrawalsPaginator
     })
@@ -49,10 +51,12 @@ export default class TransactionModule extends Common {
   public GetTransactions = async (
     first: number = 10,
     page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
     whereUser?: any
   ): Promise<TransactionPaginator | undefined> => {
     return $api.transaction
-      .GetTransactions(first, page, whereUser)
+      .GetTransactions(first, page, whereUser,orderType, order )
       .then((response) => {
         this.TransactionsPaginator = response.data?.GetTransactions
         return this.TransactionsPaginator
