@@ -130,16 +130,17 @@ order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
   }
 
   //
-  public GetMerchantProfiles = (orderType = "CREATED_AT",
-order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
-    const requestData = `
-   query GetProfiles  ($first: Int!, $page: Int!, orderBy: {
-         column: ${orderType ? orderType : "CREATED_AT"},
-         order: ${order}
-       })  {
-  GetProfiles(
+  public GetMerchantProfiles = (first: number, page: number,orderType = "CREATED_AT",
+order: "ASC" | "DESC" = "DESC") => {
+  const requestData = `
+ query GetProfiles ($first: Int!, $page: Int!)  {
+    GetProfiles (
       first: $first,
-    page: $page,  
+      page: $page,
+      orderBy: {
+            column: ${orderType ? orderType : "CREATED_AT"},
+            order: ${order}
+          }  
     where: {
       column: USER_TYPE
       operator: EQ
@@ -158,6 +159,7 @@ order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
     data {
         auth_user_id 
         updated_at
+        verification_status 
         user {
           uuid
           first_name 

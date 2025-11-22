@@ -141,12 +141,13 @@ export default class User extends Common {
   
   
   public GetMerchantProfiles = async (
+    first: number = 10,
+    page: number = 1,
     orderType = "CREATED_AT",
     order = "DESC" as "DESC" | "ASC",
-    first: number = 10,
-    page: number = 1
+ 
   ): Promise<any | undefined> => {
-    return $api.user.GetMerchantProfiles(orderType,order,first, page).then((response) => {
+    return $api.user.GetMerchantProfiles(first, page, orderType,order).then((response) => {
       this.MerchantProfilePaginator = response.data?.GetProfiles
       return this.MerchantProfilePaginator
     })
