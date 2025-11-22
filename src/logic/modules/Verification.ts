@@ -20,10 +20,12 @@ export default class Verification extends Common {
   // Queries
   public GetVerificationRequests = async (
     first: number = 10,
-    page: number = 1
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<VerificationPaginator | undefined> => {
     return $api.verification
-      .GetVerificationRequests(first, page)
+      .GetVerificationRequests(orderType, order,first, page)
       .then((response) => {
         this.VerificationPaginator = response.data?.GetVerificationRequests
         return this.VerificationPaginator

@@ -154,10 +154,10 @@ export default class User extends Common {
   }
 
   public GetAdminProfiles = async (
+    first: number = 10,
+    page: number = 1,
     orderType = "CREATED_AT",
     order = "DESC" as "DESC" | "ASC",
-    first: number = 10,
-    page: number = 1
   ): Promise<any | undefined> => {
     return $api.user.GetAdminProfiles(orderType,order,first, page).then((response) => {
       this.AdminProfilePaginator = response.data?.GetProfiles

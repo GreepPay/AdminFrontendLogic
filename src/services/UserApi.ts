@@ -184,7 +184,7 @@ order: "ASC" | "DESC" = "DESC") => {
 
   //
   public GetAdminProfiles = (orderType = "CREATED_AT",
-order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
+order: "ASC" | "DESC" = "DESC", first: number, page: number) => {
     const requestData = `
   query GetProfiles  ($first: Int!, $page: Int!)  {
   GetProfiles(
