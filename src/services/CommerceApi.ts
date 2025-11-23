@@ -111,14 +111,14 @@ export default class CommerceApi extends BaseApiService {
   };
   
   
-  public GetAllEventContent = (orderType = "CREATEDAT",
+  public GetAllEventContent = (orderType = "CREATED_AT",
   order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
    
     const requestData = `
      
      query GetAllEventContent($first: Int, $page: Int) {
        GetAllEventContent(first: $first, page: $page, orderBy: {
-             column: ${orderType ? orderType : "CREATEDAT"},
+             column: ${orderType ? orderType : "CREATED_AT"},
              order: ${order}
            }) {
          paginatorInfo {
@@ -136,6 +136,7 @@ export default class CommerceApi extends BaseApiService {
            ticket_revenue
            ticket_price
            status
+           currency
            no_of_tickets_sold
            location
            image_url

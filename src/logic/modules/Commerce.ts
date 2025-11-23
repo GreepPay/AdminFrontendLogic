@@ -33,7 +33,7 @@ export default class Commerce extends Common {
     first: number = 10,
     page: number = 1,
     orderType = "CREATED_AT",
-    order = "ASC" as "DESC" | "ASC",
+    order = "DESC" as "DESC" | "ASC",
   ): Promise<AllEventContentPaginator | undefined> => {
     console.log({ first, page, orderType, order });
     return $api.commerce
