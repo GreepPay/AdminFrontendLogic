@@ -1190,6 +1190,13 @@ export type QueryGetWithdrawalsArgs = {
   whereUser?: InputMaybe<QueryGetWithdrawalsWhereUserWhereHasConditions>;
 };
 
+
+/** Allowed column names for Query.GetAllEventContent.orderBy. */
+export enum QueryGetAllEventContentOrderByColumn {
+  CreatedAt = 'CREATEDAT'
+}
+
+
 /** Allowed column names for Query.GetProfiles.orderBy. */
 export enum QueryGetProfilesOrderByColumn {
   CreatedAt = 'CREATED_AT'
