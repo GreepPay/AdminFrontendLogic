@@ -130,7 +130,7 @@ order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
   }
 
   //
-  public GetMerchantProfiles = (first: number, page: number,orderType = "CREATED_AT",
+public GetMerchantProfiles = (first: number, page: number,orderType = "CREATED_AT",
 order: "ASC" | "DESC" = "DESC") => {
   const requestData = `
  query GetProfiles ($first: Int!, $page: Int!)  {
@@ -160,13 +160,23 @@ order: "ASC" | "DESC" = "DESC") => {
         auth_user_id 
         updated_at
         verification_status 
-        user {
-          uuid
-          first_name 
-          last_name
-          profile {
-            profile_picture
-          } 
+          business {
+          id
+          auth_user_id
+          business_name
+          logo
+          location
+          banner
+          description
+          website
+          resident_permit
+          passport
+          registration_number
+          documents
+          created_at
+          updated_at
+          country
+          city
         } 
       }
     }
