@@ -178,6 +178,23 @@ order: "ASC" | "DESC" = "DESC") => {
           country
           city
         } 
+        user {
+          uuid
+          first_name 
+          last_name
+          profile {
+            profile_picture
+          } 
+          }
+        verifications{
+         id
+         status
+         created_at
+         updated_at
+         document_type
+         document_url
+         verification_data
+        }
       }
     }
   }
