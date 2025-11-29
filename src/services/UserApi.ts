@@ -191,8 +191,6 @@ order: "ASC" | "DESC" = "DESC") => {
          status
          created_at
          updated_at
-         document_type
-         document_url
          verification_data
         }
       }
@@ -272,7 +270,8 @@ order: "ASC" | "DESC" = "DESC", first: number, page: number) => {
   }
 
   // New query methods
-  public GetBusinesses = (first: number, page: number) => {
+  public GetBusinesses = (first: number, page: number, orderType = "CREATED_AT",
+  order: "ASC" | "DESC",) => {
     const requestData = `
     query GetBusinesses($first: Int!, $page: Int!) {
       GetBusinesses(first: $first, page: $page) {
@@ -609,7 +608,4 @@ order: "ASC" | "DESC" = "DESC",first: number, page: number) => {
 
     return response
   }
-
-  
-
 }

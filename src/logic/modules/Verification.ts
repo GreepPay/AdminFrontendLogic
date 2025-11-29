@@ -2,6 +2,7 @@ import { $api } from "../../services"
 import Common from "./Common"
 import {
   MutationApproveRejectVerificationRequestArgs,
+  MutationToggleVerificationStatusArgs,
   VerificationPaginator,
 } from "../../gql/graphql"
 import { CombinedError } from "urql"
@@ -13,6 +14,8 @@ export default class Verification extends Common {
 
   // Base Variables
   public VerificationPaginator: VerificationPaginator | undefined
+  
+  public ToggleVerificationStatusPayload?: MutationToggleVerificationStatusArgs
 
   // Mutation Variables
   public VerificationActionPayload?: MutationApproveRejectVerificationRequestArgs
@@ -46,6 +49,20 @@ export default class Verification extends Common {
         })
         .catch((error: CombinedError) => {
             throw new Error(error.message)
+        })
+    }
+  }
+  
+  public ToggleVerificationStatus = () => {
+    if (this.ToggleVerificationStatusPayload) {
+      return $api.verification
+        .ToggleVerificationStatus(this.ToggleVerificationStatusPayload)
+        .then((response) => {
+          // Return the verification object or success status
+          return response.data?.ToggleVerificationStatus
+        })
+        .catch((error: CombinedError) => {
+          throw new Error(error.message)
         })
     }
   }

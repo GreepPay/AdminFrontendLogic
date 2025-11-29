@@ -1,12 +1,14 @@
 import { OperationResult } from "urql"
 import { BaseApiService } from "./common/BaseService"
 import {
-  MutationApproveRejectVerificationRequestArgs,
   VerificationPaginator,
+  MutationToggleVerificationStatusArgs,
+  MutationApproveRejectVerificationRequestArgs,
 } from "src/gql/graphql"
+import Verification from "src/logic/modules/Verification"
 
 export default class VerificationApi extends BaseApiService {
-  // mutatioin
+  // mutation
   public ApproveRejectVerificationRequest = (
     data: MutationApproveRejectVerificationRequestArgs
   ) => {
@@ -32,6 +34,53 @@ export default class VerificationApi extends BaseApiService {
  
     return response
   }
+  
+  public ToggleVerificationStatus = (
+     data: MutationToggleVerificationStatusArgs
+   ) => {
+     const requestData = `
+       mutation ToggleVerificationStatus(
+         $status: String!
+         $note: String!
+         $businessId: String!
+         $user_type: String
+       ) {
+         ToggleVerificationStatus(
+           status: $status
+           note: $note
+           businessId: $businessId
+           user_type: $user_type
+         ) {
+           id
+           status
+           note
+           business_id
+           user_type
+           updated_at
+           created_at
+           user {
+             phone
+             phone_verified_at
+             profile {
+               customer {
+                 notification_preferences
+                 location
+                 id
+               }
+             }
+           }
+         }
+       }
+     `
+ 
+     const response: Promise<
+       OperationResult<{
+         ToggleVerificationStatus:Verification 
+       }>
+     > = this.mutation(requestData, data)
+  
+     return response
+   }
 
   // Queries
   public GetVerificationRequests = (orderType = "CREATED_AT",
