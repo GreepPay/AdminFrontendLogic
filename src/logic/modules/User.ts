@@ -6,6 +6,7 @@ import {
   MutationUpdateUserRoleArgs,
   Profile,
   ProfilePaginator,
+  BusinessPaginator,
   Customer,
   Business,
   VendorOverviewContent,
@@ -32,6 +33,7 @@ export default class User extends Common {
   public UserProfile: Profile | undefined = undefined
   public AdminProfilePaginator: ProfilePaginator | undefined
   public CustomerProfilePaginator: ProfilePaginator | undefined
+  public BusinessPaginator: BusinessPaginator | undefined
   public EventHostStatsPaginator: EventHostStatsPaginator | undefined
   public UserTicketStatsPaginator: UserTicketStatsPaginator | undefined
   public ExchangeAdStatsPaginator:ExchangeAdStatsPaginator | undefined
@@ -112,6 +114,17 @@ export default class User extends Common {
     })
   }
   
+  public GetBusinesses = async (
+    first: number = 10,
+    page: number = 1,
+    orderType = "CREATED_AT",
+    order = "DESC" as "DESC" | "ASC",
+  ): Promise<any | undefined> => {
+    return $api.user.GetBusinesses(first, page, orderType, order).then((response) => {
+      this.BusinessPaginator = response.data?.GetBusinesses
+      return this.BusinessPaginator
+    })
+  }
   
   public GetEventAttendees = async (
     first: number = 10,

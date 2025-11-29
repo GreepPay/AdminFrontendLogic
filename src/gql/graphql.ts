@@ -2031,6 +2031,15 @@ export type Wallet = {
   uuid: Scalars['String'];
 };
 
+/** A paginated list of Businesses. */
+export type BusinessPaginator = {
+  __typename?: 'WalletPaginator';
+  /** A list of Business items. */
+  data: Array<Business>;
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+};
+
 /** A paginated list of Wallet items. */
 export type WalletPaginator = {
   __typename?: 'WalletPaginator';

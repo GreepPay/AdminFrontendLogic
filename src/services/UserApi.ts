@@ -5,6 +5,7 @@ import { MutationUpdateUserRoleArgs,
         Customer,
         Business,
         EventHostStatsPaginator,
+        BusinessPaginator,
         UserTicketStatsPaginator,
         ExchangeAdStatsPaginator,
         VendorOverviewContent,
@@ -206,6 +207,7 @@ order: "ASC" | "DESC" = "DESC") => {
 
     return response
   }
+  
 
   //
   public GetAdminProfiles = (orderType = "CREATED_AT",
@@ -308,18 +310,7 @@ order: "ASC" | "DESC" = "DESC", first: number, page: number) => {
 
     const response: Promise<
       OperationResult<{
-        GetBusinesses: {
-          paginatorInfo: {
-            firstItem: number
-            lastItem: number
-            currentPage: number
-            lastPage: number
-            perPage: number
-            total: number
-            hasMorePages: boolean
-          }
-          data: Business[]
-        }
+        GetBusinesses: BusinessPaginator,
       }>
     > = this.query(requestData, { first, page })
 

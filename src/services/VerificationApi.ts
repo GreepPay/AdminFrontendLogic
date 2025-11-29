@@ -39,37 +39,8 @@ export default class VerificationApi extends BaseApiService {
      data: MutationToggleVerificationStatusArgs
    ) => {
      const requestData = `
-       mutation ToggleVerificationStatus(
-         $status: String!
-         $note: String!
-         $businessId: String!
-         $user_type: String
-       ) {
-         ToggleVerificationStatus(
-           status: $status
-           note: $note
-           businessId: $businessId
-           user_type: $user_type
-         ) {
-           id
-           status
-           note
-           business_id
-           user_type
-           updated_at
-           created_at
-           user {
-             phone
-             phone_verified_at
-             profile {
-               customer {
-                 notification_preferences
-                 location
-                 id
-               }
-             }
-           }
-         }
+       mutation ToggleVerificationStatus($status: String!, $businessId: String!, $note: String!, $userType: String) {
+         ToggleVerificationStatus(status: $status, businessId: $businessId, note: $note, user_type: $userType)
        }
      `
  
